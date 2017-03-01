@@ -1,4 +1,4 @@
-package me.lemuel.blisslemuel;
+package me.lemuel.blisslemuel.api;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;

@@ -2,11 +2,11 @@ package me.lemuel.blisslemuel;
 
 
 import android.app.Application;
-import android.content.Context;
 
 import com.squareup.leakcanary.LeakCanary;
 
 import butterknife.ButterKnife;
+import io.realm.Realm;
 
 /**
  * Created by lemuel on 2017/2/24.
@@ -24,6 +24,7 @@ public class App extends Application {
             return;
         }
         LeakCanary.install(this);
+        Realm.init(this);
     }
 
     public static AppComponent getAppComponent() {
@@ -31,9 +32,5 @@ public class App extends Application {
             mAppComponent = DaggerAppComponent.builder().appModule(new AppModule()).build();
         }
         return mAppComponent;
-    }
-
-    public static Context getApplication(Context context) {
-        return context.getApplicationContext();
     }
 }

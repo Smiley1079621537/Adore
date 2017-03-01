@@ -1,6 +1,7 @@
 package me.lemuel.blisslemuel;
 
 import dagger.Component;
+import io.realm.Realm;
 import me.lemuel.blisslemuel.api.DoubanService;
 
 /**
@@ -10,4 +11,6 @@ import me.lemuel.blisslemuel.api.DoubanService;
 @Component(modules = {AppModule.class})
 public interface AppComponent {
     DoubanService getDoubanService();
+
+    Realm getRealm();
 }

@@ -4,24 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.blisslemuel.R;
-import me.lemuel.blisslemuel.items.movie.Movie;
 import me.lemuel.blisslemuel.items.movie.MovieViewProvider;
+import me.lemuel.blisslemuel.items.movie.SubjectsBean;
 
 /**
  * Created by lemuel on 2017/2/24.
  */
-public class MainView extends Fragment implements MainContract.View {
+public class MainView extends Fragment
+        implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
+    private static final int SPAN_COUNT = 2;
     private MainContract.Presenter mMainPresenter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
@@ -37,16 +40,14 @@ public class MainView extends Fragment implements MainContract.View {
         return root;
     }
 
-    public MainView() {
-        //
-    }
-
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        refreshLayout.setOnRefreshListener(this);
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
+                SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL));
         listAdapter = new MultiTypeAdapter();
-        listAdapter.register(Movie.SubjectsBean.class, new MovieViewProvider());
+        listAdapter.register(SubjectsBean.class, new MovieViewProvider());
         recyclerView.setAdapter(listAdapter);
         mMainPresenter.onCreate();
     }
@@ -77,7 +78,22 @@ public class MainView extends Fragment implements MainContract.View {
     }
 
     @Override
+    public void loadCacheData(RealmResults<SubjectsBean> results) {
+        Items items = new Items();
+        for (SubjectsBean subject : results) {
+            items.add(subject);
+        }
+        listAdapter.setItems(items);
+        listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void setPresenter(MainContract.Presenter presenter) {
         mMainPresenter = presenter;
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshLayout.setRefreshing(false);
     }
 }
