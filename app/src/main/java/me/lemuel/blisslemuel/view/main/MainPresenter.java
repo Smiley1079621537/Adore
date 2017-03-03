@@ -36,23 +36,23 @@ public class MainPresenter implements MainContract.Presenter {
 
     @Override
     public void onCreate() {
-        //mainView.showLoading();
+
         App.getAppComponent().getDoubanService().getMovies()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Movie>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-
+                        mainView.showLoading();
                     }
 
                     @Override
                     public void onNext(Movie movie) {
                         mainView.hideLoding();
-                        // Obtain a Realm instance
                         Realm realm = App.getAppComponent().getRealm();
                         realm.beginTransaction();
                         List<SubjectsBean> subjects = movie.getSubjects();
+                        realm.delete(SubjectsBean.class);
                         Items items = new Items();
                         for (SubjectsBean subject : subjects) {
                             items.add(subject);
@@ -65,7 +65,6 @@ public class MainPresenter implements MainContract.Presenter {
                     @Override
                     public void onError(Throwable e) {
                         mainView.hideLoding();
-                      //  mainView.showToast(e.getMessage());
                         RealmResults<SubjectsBean> all = App.getAppComponent().getRealm()
                                 .where(SubjectsBean.class)
                                 .findAll();

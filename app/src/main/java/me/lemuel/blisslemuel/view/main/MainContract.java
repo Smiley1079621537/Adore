@@ -22,6 +22,8 @@ public interface MainContract {
         void loadData(Items items);
 
         void loadCacheData(RealmResults<SubjectsBean> results);
+
+        void setPresenter(MainPresenter presenter);
     }
 
     interface Presenter extends BasePresenter {

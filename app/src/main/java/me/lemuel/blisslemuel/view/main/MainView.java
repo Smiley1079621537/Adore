@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import javax.inject.Inject;
 
 import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
@@ -24,8 +26,8 @@ import me.lemuel.blisslemuel.items.movie.SubjectsBean;
 public class MainView extends Fragment
         implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
-    private static final int SPAN_COUNT = 2;
-    private MainContract.Presenter mMainPresenter;
+    @Inject
+    MainPresenter mMainPresenter;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private MultiTypeAdapter listAdapter;
@@ -44,12 +46,20 @@ public class MainView extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         refreshLayout.setOnRefreshListener(this);
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(
-                SPAN_COUNT, StaggeredGridLayoutManager.VERTICAL));
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         listAdapter = new MultiTypeAdapter();
         listAdapter.register(SubjectsBean.class, new MovieViewProvider());
         recyclerView.setAdapter(listAdapter);
+        DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
         mMainPresenter.onCreate();
+    }
+
+    public MainView(){
+
+    }
+
+    public void scrollToTop(){
+        recyclerView.scrollToPosition(0);
     }
 
     public static MainView newInstance() {
@@ -88,7 +98,7 @@ public class MainView extends Fragment
     }
 
     @Override
-    public void setPresenter(MainContract.Presenter presenter) {
+    public void setPresenter(MainPresenter presenter) {
         mMainPresenter = presenter;
     }
 

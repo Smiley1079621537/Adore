@@ -1,6 +1,7 @@
 package me.lemuel.blisslemuel.items.movie;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 
 import me.drakeet.multitype.ItemViewProvider;
+import me.lemuel.blisslemuel.MovieActivity;
 import me.lemuel.blisslemuel.R;
 import me.lemuel.blisslemuel.util.CommentUtil;
 
@@ -38,6 +40,12 @@ public class MovieViewProvider
         holder.year.setText(movie.getYear());
         holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
         Glide.with(context).load(movie.getImages().getLarge()).asBitmap().into(holder.pic);
+        holder.pic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                context.startActivity(new Intent(context, MovieActivity.class));
+            }
+        });
     }
 
 
@@ -46,7 +54,6 @@ public class MovieViewProvider
         private final TextView title;
         private final TextView year;
         private final ImageView pic;
-        private final TextView genres;
         private final TextView director;
 
         ViewHolder(View itemView) {
@@ -54,7 +61,6 @@ public class MovieViewProvider
             title = (TextView) itemView.findViewById(R.id.title);
             year = (TextView) itemView.findViewById(R.id.year);
             pic = (ImageView) itemView.findViewById(R.id.movie_pic);
-            genres = (TextView) itemView.findViewById(R.id.genres);
             director = (TextView) itemView.findViewById(R.id.director);
         }
     }

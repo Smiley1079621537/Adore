@@ -9,6 +9,7 @@ import io.realm.RealmObject;
  * Created by lemuel on 2017/3/1.
  */
 public class SubjectsBean extends RealmObject {
+    private String id;
     private RatingBean rating;
     private String title;
     private int collect_count;
@@ -17,7 +18,6 @@ public class SubjectsBean extends RealmObject {
     private String year;
     private ImagesBean images;
     private String alt;
-    private String id;
     private RealmList<CastsBean> casts;
     private RealmList<DirectorsBean> directors;
 
