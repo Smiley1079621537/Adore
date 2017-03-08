@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <ImageView
+            android:transitionName="@string/item_pic"
             android:id="@+id/movie_pic"
             android:layout_width="match_parent"
             android:layout_height="200dp"
