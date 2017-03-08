@@ -75,6 +75,7 @@ dependencies {
     compile 'com.github.adrielcafe:AndroidAudioRecorder:0.2.0'
     compile 'com.flurgle:camerakit:0.9.13'
     compile 'com.android.support:support-vector-drawable:25.2.0'
+    compile 'fm.jiecao:jiecaovideoplayer:5.5.1'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'

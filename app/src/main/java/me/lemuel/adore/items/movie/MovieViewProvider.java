@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.MovieActivity;
 import me.lemuel.adore.R;
@@ -49,7 +50,7 @@ public class MovieViewProvider
         holder.year.setText(movie.getYear());
         holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
         Glide.with(activity).load(movie.getImages().getLarge()).asBitmap().into(holder.pic);
-        ViewCompat.setTransitionName(holder.pic,activity.getString(R.string.item_pic));
+        ViewCompat.setTransitionName(holder.pic, activity.getString(R.string.item_pic));
         holder.pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +59,7 @@ public class MovieViewProvider
                                 holder.pic, holder.pic.getTransitionName());
                 //activity.getWindow().setExitTransition(new Explode());//new Slide()  new Fade()
                 activity.startActivity(new Intent(activity, MovieActivity.class)
-                        .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()),options.toBundle());
+                        .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()), options.toBundle());
             }
         });
     }
@@ -70,6 +71,7 @@ public class MovieViewProvider
         private final TextView year;
         private final ImageView pic;
         private final TextView director;
+        private final JCVideoPlayerStandard jcVideoPlayerStandard;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +79,7 @@ public class MovieViewProvider
             year = (TextView) itemView.findViewById(R.id.year);
             pic = (ImageView) itemView.findViewById(R.id.movie_pic);
             director = (TextView) itemView.findViewById(R.id.director);
+            jcVideoPlayerStandard = (JCVideoPlayerStandard) itemView.findViewById(R.id.videoplayer);
         }
     }
 }

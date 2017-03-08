@@ -22,6 +22,7 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.view.main.MainFragment;
 import me.lemuel.adore.view.main.MainNowFragment;
@@ -88,9 +89,11 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
+        if (JCVideoPlayer.backPress()) {
+            return;
+        }
+        super.onBackPressed();
     }
 
     @Override
@@ -152,5 +155,11 @@ public class HomeActivity extends AppCompatActivity
                 .withText("微信分享测试！test!")
                 .setCallback(umShareListener)
                 .share();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        JCVideoPlayer.releaseAllVideos();
     }
 }
