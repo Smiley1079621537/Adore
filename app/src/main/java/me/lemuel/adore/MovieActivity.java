@@ -5,7 +5,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.transition.Explode;
 import android.view.Window;
 import android.widget.ImageView;
 
@@ -22,7 +21,6 @@ public class MovieActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         setContentView(R.layout.activity_movie);
-        getWindow().setExitTransition(new Explode());//new Slide()  new Fade()
 
         String imgUrl = getIntent().getStringExtra(getString(R.string.img_url));
         final DialogView dialogView = new DialogView();

@@ -24,7 +24,8 @@ import me.lemuel.adore.items.movie.SubjectsBean;
  * Created by lemuel on 2017/3/7.
  */
 
-public class MainNowFragment extends Fragment implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MainNowFragment extends Fragment
+        implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
@@ -34,7 +35,8 @@ public class MainNowFragment extends Fragment implements MainContract.View, Swip
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_now, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerview);
         refreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);

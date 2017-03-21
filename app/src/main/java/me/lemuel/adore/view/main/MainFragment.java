@@ -47,9 +47,8 @@ public class MainFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
    //     tabLayout.setTabMode(TabLayout.MODE_FIXED);
-        final Fragment[] fragments = new Fragment[2];
+        final Fragment[] fragments = new Fragment[1];
         fragments[0] = MainNowFragment.newInstance();
-        fragments[1] = MainNowFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
         tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.going_to_release)});
         viewPager.setAdapter(tabPagerAdapter);

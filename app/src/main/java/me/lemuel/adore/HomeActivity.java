@@ -17,11 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.view.main.MainFragment;
@@ -29,38 +30,44 @@ import me.lemuel.adore.view.main.MainNowFragment;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private static final String TAG = "lemuel";
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tab_layout)
+    TabLayout tabLayout;
+    @BindView(R.id.viewpager)
+    ViewPager viewPager;
+    @BindView(R.id.fab)
+    FloatingActionButton fb;
+    @BindView(R.id.drawer_layout)
+    DrawerLayout drawer;
+    @BindView(R.id.app_bar)
+    AppBarLayout mAppBar;
+
     private boolean isCollapsed = false;//是否被折叠
-    private AppBarLayout mAppBar;
-    private ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
         final Fragment[] fragments = new Fragment[2];
         fragments[0] = MainFragment.newInstance();
         fragments[1] = MainNowFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
         tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.going_to_release)});
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        mViewPager.setAdapter(tabPagerAdapter);
-        tabLayout.setupWithViewPager(mViewPager);
 
-        mAppBar = (AppBarLayout) findViewById(R.id.app_bar);
+        viewPager.setAdapter(tabPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
+
         mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
@@ -68,14 +75,13 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        FloatingActionButton fb = (FloatingActionButton) findViewById(R.id.fab);
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isCollapsed)
                     return;
                 mAppBar.setExpanded(true, true);
-                String tag = "android:switcher:" + mViewPager.getId() + ":" + mViewPager.getCurrentItem();
+                String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
                 if (fragment != null && fragment instanceof MainFragment) {
                     ((MainFragment) fragment).scrollToTop();

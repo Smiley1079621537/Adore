@@ -5,9 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,16 +48,11 @@ public class MovieViewProvider
         holder.year.setText(movie.getYear());
         holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
         Glide.with(activity).load(movie.getImages().getLarge()).asBitmap().into(holder.pic);
-        ViewCompat.setTransitionName(holder.pic, activity.getString(R.string.item_pic));
         holder.pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(activity,
-                                holder.pic, holder.pic.getTransitionName());
-                //activity.getWindow().setExitTransition(new Explode());//new Slide()  new Fade()
                 activity.startActivity(new Intent(activity, MovieActivity.class)
-                        .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()), options.toBundle());
+                        .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()));
             }
         });
     }
