@@ -5,10 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-/**
- * Created by lemuel on 2017/3/2.
- */
-
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
     private String tabTitles[];

@@ -2,7 +2,7 @@ package me.lemuel.adore;
 
 import dagger.Component;
 import io.realm.Realm;
-import me.lemuel.adore.api.DoubanService;
+import me.lemuel.adore.api.DBSerivce;
 
 /**
  * Created by lemuel on 2017/2/28.
@@ -10,7 +10,8 @@ import me.lemuel.adore.api.DoubanService;
 
 @Component(modules = {AppModule.class})
 public interface AppComponent {
-    DoubanService getDoubanService();
+
+    DBSerivce getDoubanService();
 
     Realm getRealm();
 }

@@ -1,5 +1,6 @@
 package me.lemuel.adore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -43,6 +45,8 @@ public class HomeActivity extends AppCompatActivity
     DrawerLayout drawer;
     @BindView(R.id.app_bar)
     AppBarLayout mAppBar;
+    @BindView(R.id.nav_view)
+    NavigationView mNavView;
 
     private boolean isCollapsed = false;//是否被折叠
 
@@ -57,6 +61,7 @@ public class HomeActivity extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        mNavView.setNavigationItemSelectedListener(this);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         final Fragment[] fragments = new Fragment[2];
@@ -112,6 +117,10 @@ public class HomeActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                startActivity(new Intent(this, MainActivity.class));
+                break;
+            case R.id.search:
+
                 break;
             default:
                 break;
@@ -119,14 +128,14 @@ public class HomeActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_share:
+            case R.id.nav_camera:
                 wxShare();
                 break;
-            default:
+            case R.id.nav_gallery:
+                Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show();
                 break;
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

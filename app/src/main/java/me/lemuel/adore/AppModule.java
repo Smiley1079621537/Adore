@@ -4,8 +4,8 @@ import dagger.Module;
 import dagger.Provides;
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import me.lemuel.adore.api.DoubanManager;
-import me.lemuel.adore.api.DoubanService;
+import me.lemuel.adore.api.AppManager;
+import me.lemuel.adore.api.DBSerivce;
 
 /**
  * Created by lemuel on 2017/2/28.
@@ -15,8 +15,8 @@ import me.lemuel.adore.api.DoubanService;
 public class AppModule {
 
     @Provides
-    public DoubanService provideMoviesService() {
-        return DoubanManager.getDoubanManager().create(DoubanService.class);
+    public DBSerivce provideMoviesService() {
+        return AppManager.getDBRetrofit().create(DBSerivce.class);
     }
 
     @Provides

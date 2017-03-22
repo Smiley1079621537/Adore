@@ -8,7 +8,7 @@ import retrofit2.http.GET;
  * Created by lemuel on 2017/2/24.
  */
 
-public interface DoubanService {
+public interface DBSerivce {
     @GET("v2/movie/in_theaters")
     Observable<Movie> getMovies();
 }

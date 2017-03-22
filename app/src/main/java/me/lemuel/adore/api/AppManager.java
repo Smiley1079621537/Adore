@@ -8,12 +8,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Created by lemuel on 2017/2/28.
  */
 
-public class DoubanManager {
+public class AppManager {
 
     private static Retrofit mRetrofit = null;
     private final static String BASE_URL = "https://api.douban.com/";
 
-    public static Retrofit getDoubanManager() {
+    public static Retrofit getDBRetrofit() {
         if (mRetrofit == null) {
             mRetrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)

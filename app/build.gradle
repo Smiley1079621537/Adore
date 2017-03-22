@@ -48,6 +48,7 @@ repositories {
     maven {
         url "https://jitpack.io"
     }
+    jcenter()
 }
 
 
@@ -76,6 +77,12 @@ dependencies {
     compile 'com.flurgle:camerakit:0.9.13'
     compile 'com.android.support:support-vector-drawable:25.2.0'
     compile 'fm.jiecao:jiecaovideoplayer:5.5.1'
+    compile 'zlc.season:rxdownload2:2.0.0-beta3'
+    compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
+    compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
+    compile 'com.geniusforapp.fancydialog:FancyDialog:0.0.4'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'
