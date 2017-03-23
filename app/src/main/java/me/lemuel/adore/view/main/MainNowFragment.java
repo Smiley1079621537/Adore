@@ -13,7 +13,6 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.R;
@@ -78,16 +77,6 @@ public class MainNowFragment extends Fragment
 
     @Override
     public void loadData(Items items) {
-        listAdapter.setItems(items);
-        listAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void loadCacheData(RealmResults<SubjectsBean> results) {
-        Items items = new Items();
-        for (SubjectsBean subject : results) {
-            items.add(subject);
-        }
         listAdapter.setItems(items);
         listAdapter.notifyDataSetChanged();
     }

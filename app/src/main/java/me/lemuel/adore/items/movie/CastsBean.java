@@ -1,12 +1,10 @@
 package me.lemuel.adore.items.movie;
 
-import io.realm.RealmObject;
-
 /**
  * Created by lemuel on 2017/3/1.
  */
 
-public  class CastsBean extends RealmObject {
+public  class CastsBean  {
     private String alt;
     private AvatarsBean avatars;
     private String name;

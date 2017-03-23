@@ -134,6 +134,9 @@ public class HomeActivity extends AppCompatActivity
             case R.id.nav_camera:
                 wxShare();
                 break;
+            case R.id.nav_manage:
+
+                break;
             case R.id.nav_gallery:
                 Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show();
                 break;

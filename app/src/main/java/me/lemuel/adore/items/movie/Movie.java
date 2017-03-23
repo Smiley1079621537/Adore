@@ -2,19 +2,16 @@ package me.lemuel.adore.items.movie;
 
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
 /**
  * Created by lemuel on 2017/2/24.
  */
 
-public class Movie extends RealmObject{
+public class Movie {
     private int count;
     private int start;
     private int total;
     private String title;
-    private RealmList<SubjectsBean> subjects;
+    private List<SubjectsBean> subjects;
 
     public int getCount() {
         return count;
@@ -52,7 +49,7 @@ public class Movie extends RealmObject{
         return subjects;
     }
 
-    public void setSubjects(RealmList<SubjectsBean> subjects) {
+    public void setSubjects(List<SubjectsBean> subjects) {
         this.subjects = subjects;
     }
 }

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
-apply plugin: 'realm-android'
+apply plugin: 'org.greenrobot.greendao'
 
 android {
     compileSdkVersion 25
@@ -83,6 +83,7 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding-appcompat-v7:2.0.0'
     compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
     compile 'com.geniusforapp.fancydialog:FancyDialog:0.0.4'
+    compile 'org.greenrobot:greendao:3.2.0'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'

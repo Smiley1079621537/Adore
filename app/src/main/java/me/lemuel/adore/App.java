@@ -11,7 +11,6 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
 import butterknife.ButterKnife;
-import io.realm.Realm;
 import me.lemuel.adore.api.AppManager;
 import zlc.season.rxdownload2.RxDownload;
 
@@ -32,7 +31,6 @@ public class App extends Application {
             return;
         }
         LeakCanary.install(this);
-        Realm.init(this);
         UMShareAPI.get(this);
         Config.DEBUG = true;
     }

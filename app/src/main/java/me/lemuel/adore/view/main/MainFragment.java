@@ -14,11 +14,9 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.TabPagerAdapter;
-import me.lemuel.adore.items.movie.SubjectsBean;
 
 /**
  * Created by lemuel on 2017/2/24.
@@ -88,15 +86,6 @@ public class MainFragment extends Fragment
       //  listAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void loadCacheData(RealmResults<SubjectsBean> results) {
-      /*  Items items = new Items();
-        for (SubjectsBean subject : results) {
-            items.add(subject);
-        }
-        listAdapter.setItems(items);
-        listAdapter.notifyDataSetChanged();*/
-    }
 
     @Override
     public void setPresenter(MainPresenter presenter) {

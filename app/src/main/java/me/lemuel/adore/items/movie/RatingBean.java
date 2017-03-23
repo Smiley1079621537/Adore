@@ -1,12 +1,10 @@
 package me.lemuel.adore.items.movie;
 
-import io.realm.RealmObject;
-
 /**
  * Created by lemuel on 2017/3/1.
  */
 
-public class RatingBean extends RealmObject {
+public class RatingBean {
     private int max;
     private double average;
     private String stars;

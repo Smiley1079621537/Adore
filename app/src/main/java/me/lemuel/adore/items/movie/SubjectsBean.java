@@ -2,13 +2,10 @@ package me.lemuel.adore.items.movie;
 
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-
 /**
  * Created by lemuel on 2017/3/1.
  */
-public class SubjectsBean extends RealmObject {
+public class SubjectsBean {
     private String id;
     private RatingBean rating;
     private String title;
@@ -18,8 +15,8 @@ public class SubjectsBean extends RealmObject {
     private String year;
     private ImagesBean images;
     private String alt;
-    private RealmList<CastsBean> casts;
-    private RealmList<DirectorsBean> directors;
+    private List<CastsBean> casts;
+    private List<DirectorsBean> directors;
 
     public RatingBean getRating() {
         return rating;
@@ -97,7 +94,7 @@ public class SubjectsBean extends RealmObject {
         return casts;
     }
 
-    public void setCasts(RealmList<CastsBean> casts) {
+    public void setCasts(List<CastsBean> casts) {
         this.casts = casts;
     }
 
@@ -105,7 +102,7 @@ public class SubjectsBean extends RealmObject {
         return directors;
     }
 
-    public void setDirectors(RealmList<DirectorsBean> directors) {
+    public void setDirectors(List<DirectorsBean> directors) {
         this.directors = directors;
     }
 }

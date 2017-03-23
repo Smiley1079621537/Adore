@@ -1,7 +1,6 @@
 package me.lemuel.adore;
 
 import dagger.Component;
-import io.realm.Realm;
 import me.lemuel.adore.api.DBSerivce;
 
 /**
@@ -12,6 +11,4 @@ import me.lemuel.adore.api.DBSerivce;
 public interface AppComponent {
 
     DBSerivce getDoubanService();
-
-    Realm getRealm();
 }
