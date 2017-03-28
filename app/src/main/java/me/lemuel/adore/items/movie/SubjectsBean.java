@@ -17,6 +17,15 @@ public class SubjectsBean {
     private String alt;
     private List<CastsBean> casts;
     private List<DirectorsBean> directors;
+    private int height;
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 
     public RatingBean getRating() {
         return rating;
@@ -104,5 +113,22 @@ public class SubjectsBean {
 
     public void setDirectors(List<DirectorsBean> directors) {
         this.directors = directors;
+    }
+
+    @Override
+    public String toString() {
+        return "SubjectsBean{" +
+                "id='" + id + '\'' +
+                ", rating=" + rating +
+                ", title='" + title + '\'' +
+                ", collect_count=" + collect_count +
+                ", original_title='" + original_title + '\'' +
+                ", subtype='" + subtype + '\'' +
+                ", year='" + year + '\'' +
+                ", images=" + images +
+                ", alt='" + alt + '\'' +
+                ", casts=" + casts +
+                ", directors=" + directors +
+                '}';
     }
 }

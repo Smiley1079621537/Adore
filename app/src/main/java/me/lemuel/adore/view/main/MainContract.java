@@ -1,8 +1,8 @@
 package me.lemuel.adore.view.main;
 
 import me.drakeet.multitype.Items;
-import me.lemuel.adore.BasePresenter;
-import me.lemuel.adore.BaseView;
+import me.lemuel.adore.base.BasePresenter;
+import me.lemuel.adore.base.BaseView;
 
 /**
  * Created by lemuel on 2017/2/27.

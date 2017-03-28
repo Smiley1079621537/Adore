@@ -20,9 +20,4 @@ public class MainModule {
     MainNowFragment provideMainView() {
         return mView;
     }
-
-   /* @Provides
-    MainPresenter getMainPresenter(MainNowFragment fragment){
-        return new MainPresenter(fragment);
-    }*/
 }

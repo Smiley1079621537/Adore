@@ -8,7 +8,5 @@ import dagger.Component;
 
 @Component(modules = {MainModule.class})
 public interface MainComponent {
-   // void inject(MainFragment mainFragment);
-
     void inject(MainNowFragment mainFragment);
 }

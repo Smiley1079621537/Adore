@@ -4,8 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
+import me.lemuel.adore.OnLoadMoreListener;
 import me.lemuel.adore.R;
 import me.lemuel.adore.items.movie.MovieViewProvider;
 import me.lemuel.adore.items.movie.SubjectsBean;
@@ -38,6 +40,8 @@ public class MainNowFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_now, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerview);
+        ((DefaultItemAnimator)recyclerView.getItemAnimator())
+                .setSupportsChangeAnimations(false);//避免notifyDataSetChanged时闪屏
         refreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
         return root;
     }
@@ -47,13 +51,20 @@ public class MainNowFragment extends Fragment
         super.onActivityCreated(savedInstanceState);
         refreshLayout.setOnRefreshListener(this);
         refreshLayout.setRefreshing(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         listAdapter = new MultiTypeAdapter();
         listAdapter.register(SubjectsBean.class, new MovieViewProvider(getActivity()));
         recyclerView.setAdapter(listAdapter);
         DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
         mainPresenter.onCreate();
+        recyclerView.setOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mainPresenter.loadMore();
+            }
+        });
     }
+
 
     @Override
     public void onRefresh() {

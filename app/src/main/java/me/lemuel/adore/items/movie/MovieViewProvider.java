@@ -10,10 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import me.drakeet.multitype.ItemViewProvider;
@@ -47,7 +46,10 @@ public class MovieViewProvider
         holder.title.setText(movie.getTitle());
         holder.year.setText(movie.getYear());
         holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
-        Glide.with(activity).load(movie.getImages().getLarge()).asBitmap().into(holder.pic);
+        ViewGroup.LayoutParams lp = holder.pic.getLayoutParams();
+        lp.height = movie.getHeight();
+        holder.pic.setLayoutParams(lp);
+        holder.pic.setImageURI(movie.getImages().getLarge());
         holder.pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -60,17 +62,17 @@ public class MovieViewProvider
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView title;
-        private final TextView year;
-        private final ImageView pic;
-        private final TextView director;
-        private final JCVideoPlayerStandard jcVideoPlayerStandard;
+        private TextView title;
+        private TextView year;
+        private SimpleDraweeView pic;
+        private TextView director;
+        private JCVideoPlayerStandard jcVideoPlayerStandard;
 
         ViewHolder(View itemView) {
             super(itemView);
             title = (TextView) itemView.findViewById(R.id.title);
             year = (TextView) itemView.findViewById(R.id.year);
-            pic = (ImageView) itemView.findViewById(R.id.movie_pic);
+            pic = (SimpleDraweeView) itemView.findViewById(R.id.movie_pic);
             director = (TextView) itemView.findViewById(R.id.director);
             jcVideoPlayerStandard = (JCVideoPlayerStandard) itemView.findViewById(R.id.videoplayer);
         }

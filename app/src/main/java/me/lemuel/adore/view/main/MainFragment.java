@@ -21,8 +21,7 @@ import me.lemuel.adore.adapter.TabPagerAdapter;
 /**
  * Created by lemuel on 2017/2/24.
  */
-public class MainFragment extends Fragment
-        implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends Fragment implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -44,13 +43,11 @@ public class MainFragment extends Fragment
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-   //     tabLayout.setTabMode(TabLayout.MODE_FIXED);
         final Fragment[] fragments = new Fragment[1];
         fragments[0] = MainNowFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
         tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.going_to_release)});
         viewPager.setAdapter(tabPagerAdapter);
-    //    tabLayout.setupWithViewPager(viewPager);
     }
 
     public MainFragment(){

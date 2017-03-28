@@ -1,6 +1,6 @@
 package me.lemuel.adore.api;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import me.lemuel.adore.items.movie.Movie;
 import retrofit2.http.GET;
 
@@ -10,5 +10,5 @@ import retrofit2.http.GET;
 
 public interface DBSerivce {
     @GET("v2/movie/in_theaters")
-    Observable<Movie> getMovies();
+    Flowable<Movie> getMovies();
 }

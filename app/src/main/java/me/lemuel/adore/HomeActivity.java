@@ -1,5 +1,7 @@
 package me.lemuel.adore;
 
+import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +19,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
@@ -30,9 +34,11 @@ import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.view.main.MainFragment;
 import me.lemuel.adore.view.main.MainNowFragment;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "lemuel";
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final int REQUEST_CAMERA = 0;
+    private static final int REQUEST_ALBUM = 1;
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.tab_layout)
@@ -49,7 +55,8 @@ public class HomeActivity extends AppCompatActivity
     NavigationView mNavView;
 
     private boolean isCollapsed = false;//是否被折叠
-
+    private static final String TAG = "lemuel";
+    private ImageView mAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +68,16 @@ public class HomeActivity extends AppCompatActivity
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         mNavView.setNavigationItemSelectedListener(this);
+        mAvatar = (ImageView) mNavView.getHeaderView(0).findViewById(R.id.avatar);
+        mAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawers();
+
+            }
+        });
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
         final Fragment[] fragments = new Fragment[2];
@@ -93,6 +109,40 @@ public class HomeActivity extends AppCompatActivity
                 }
             }
         });
+    }
+
+    private void showAlert(final Activity activity) {
+        FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(activity)
+                .setImageRecourse(R.drawable.ic_adb_black_24dp)
+                .setTextTitle("今日经文")
+                .setTextSubTitle("林后5:17")
+                .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
+                .setNegativeColor(R.color.colorAccent)
+                .setNegativeButtonText("取消")
+                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButtonText("确定")
+                .setPositiveColor(R.color.colorPrimary)
+                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
+                //.setAutoHide(true)
+                .build();
+        alert.show();
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 
     @Override
@@ -132,7 +182,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_camera:
-                wxShare();
+                //wxShare();
                 break;
             case R.id.nav_manage:
 
