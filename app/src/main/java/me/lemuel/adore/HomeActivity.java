@@ -2,8 +2,13 @@ package me.lemuel.adore;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -14,6 +19,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -27,17 +33,20 @@ import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
+import java.io.File;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.adapter.TabPagerAdapter;
+import me.lemuel.adore.util.BitmapUtil;
 import me.lemuel.adore.view.main.MainFragment;
 import me.lemuel.adore.view.main.MainNowFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private static final int REQUEST_CAMERA = 0;
-    private static final int REQUEST_ALBUM = 1;
+    private static final int REQUEST_CAMERA = 0x01;
+    private static final int REQUEST_ALBUM = 0X02;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -75,10 +84,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 drawer.closeDrawers();
-
+                showAvatarAlert();
             }
         });
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+
+        setAvatar();
 
         final Fragment[] fragments = new Fragment[2];
         fragments[0] = MainFragment.newInstance();
@@ -111,6 +122,38 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    private void setAvatar() {
+        String path = this.getFilesDir() + "/avatar.png";
+        File file = new File(path);
+        if (file.exists()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(path);
+            mAvatar.setImageBitmap(bitmap);
+        }
+    }
+
+    private void showAvatarAlert() {
+        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源").setItems(new String[]{"拍照", "图库"},
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0://拍照
+                                //打开系统拍照程序，选择拍照图片
+                                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(camera, REQUEST_CAMERA);
+                                break;
+                            case 1://图库
+                                //打开系统图库程序，选择图片
+                                Intent picture = new Intent(Intent.ACTION_PICK,
+                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                                startActivityForResult(picture, REQUEST_ALBUM);
+                                break;
+                        }
+                    }
+                }).show();
+
+    }
+
     private void showAlert(final Activity activity) {
         FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(activity)
                 .setImageRecourse(R.drawable.ic_adb_black_24dp)
@@ -134,7 +177,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     }
                 })
                 .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
-                //.setAutoHide(true)
+                .setAutoHide(false)
                 .build();
         alert.show();
     }
@@ -142,12 +185,29 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK && data != null) {
+            //说明是拍照
+            Bundle bundle = data.getExtras();
+            //获取相机返回的数据，并转换为图片格式
+            Bitmap bitmap = (Bitmap) bundle.get("data");
+            mAvatar.setImageBitmap(bitmap);
+            //将图片保存在本地
+            BitmapUtil.saveImage(this, bitmap);
+        } else if (requestCode == REQUEST_ALBUM && resultCode == RESULT_OK && data != null) {
+            //图库
+            Uri selectedImage = data.getData();
+            String pathResult = BitmapUtil.getPath(this, selectedImage);
+            //加载存储空间中的图片资源并显示
+            Bitmap decodeFile = BitmapFactory.decodeFile(pathResult);
+            mAvatar.setImageBitmap(decodeFile);
+            //保存图片到本地
+            BitmapUtil.saveImage(this, decodeFile);
+        }
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         }
@@ -191,7 +251,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show();
                 break;
         }
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
