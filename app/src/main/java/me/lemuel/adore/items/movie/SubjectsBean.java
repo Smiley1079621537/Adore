@@ -1,12 +1,14 @@
 package me.lemuel.adore.items.movie;
 
-import java.util.List;
+import io.realm.RealmList;
+import io.realm.RealmObject;
 
 /**
  * Created by lemuel on 2017/3/1.
  */
-public class SubjectsBean {
-    private String id;
+
+
+public class SubjectsBean extends RealmObject {
     private RatingBean rating;
     private String title;
     private int collect_count;
@@ -15,17 +17,9 @@ public class SubjectsBean {
     private String year;
     private ImagesBean images;
     private String alt;
-    private List<CastsBean> casts;
-    private List<DirectorsBean> directors;
+    private RealmList<CastsBean> casts;
+    private RealmList<DirectorsBean> directors;
     private int height;
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getHeight() {
-        return height;
-    }
 
     public RatingBean getRating() {
         return rating;
@@ -91,44 +85,27 @@ public class SubjectsBean {
         this.alt = alt;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public List<CastsBean> getCasts() {
+    public RealmList<CastsBean> getCasts() {
         return casts;
     }
 
-    public void setCasts(List<CastsBean> casts) {
+    public void setCasts(RealmList<CastsBean> casts) {
         this.casts = casts;
     }
 
-    public List<DirectorsBean> getDirectors() {
+    public RealmList<DirectorsBean> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(List<DirectorsBean> directors) {
+    public void setDirectors(RealmList<DirectorsBean> directors) {
         this.directors = directors;
     }
 
-    @Override
-    public String toString() {
-        return "SubjectsBean{" +
-                "id='" + id + '\'' +
-                ", rating=" + rating +
-                ", title='" + title + '\'' +
-                ", collect_count=" + collect_count +
-                ", original_title='" + original_title + '\'' +
-                ", subtype='" + subtype + '\'' +
-                ", year='" + year + '\'' +
-                ", images=" + images +
-                ", alt='" + alt + '\'' +
-                ", casts=" + casts +
-                ", directors=" + directors +
-                '}';
+    public int getHeight() {
+        return height;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
     }
 }

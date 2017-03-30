@@ -3,7 +3,6 @@ package me.lemuel.adore.app;
 
 import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.Context;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
@@ -12,6 +11,8 @@ import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
 import butterknife.ButterKnife;
+import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import me.lemuel.adore.BuildConfig;
 import me.lemuel.adore.R;
 import me.lemuel.adore.api.AppManager;
@@ -28,6 +29,9 @@ public class App extends Application {
     static {
         PlatformConfig.setWeixin("wxb91475a5accdcf0e", "6b0e4fda3c4f7c2372753846a0d2aa06");
     }
+
+    @SuppressLint("StaticFieldLeak")
+    private static Realm moviesRealm;
 
     public static App getAppContext() {
         return appContext;
@@ -49,7 +53,22 @@ public class App extends Application {
                 .setDefaultFontPath("fonts/app.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
+        Realm.init(this);
+
     }
+
+    //电影数据
+    public static Realm getMoviesRealm() {
+        if (moviesRealm == null) {
+            RealmConfiguration moviesConfig = new RealmConfiguration.Builder()
+                    .name("movies.realm")
+                    .schemaVersion(1)
+                    .build();
+            moviesRealm = Realm.getInstance(moviesConfig);
+        }
+        return moviesRealm;
+    }
+
 
     public static AppComponent getAppComponent() {
         if (mAppComponent == null) {
@@ -58,14 +77,15 @@ public class App extends Application {
         return mAppComponent;
     }
 
-    public static RxDownload getRxDownload(Context context) {
+    public static RxDownload getRxDownload() {
         if (mRxDownload == null) {
-            mRxDownload = RxDownload.getInstance(context)
-                    .retrofit(AppManager.getDBRetrofit())               //若需要自己的retrofit客户端,可在这里指定
-                    .maxThread(3)                                       //设置最大线程
-                    .maxRetryCount(3)                                   //设置下载失败重试次数
+            mRxDownload = RxDownload.getInstance(getAppContext())
+                    .retrofit(AppManager.getDBRetrofit())//若需要自己的retrofit客户端,可在这里指定
+                    .maxThread(3)                        //设置最大线程
+                    .maxRetryCount(3)                    //设置下载失败重试次数
                     .maxDownloadNumber(5);
         }
         return mRxDownload;
     }
+
 }

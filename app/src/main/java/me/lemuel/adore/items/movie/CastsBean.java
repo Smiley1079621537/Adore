@@ -1,14 +1,16 @@
 package me.lemuel.adore.items.movie;
 
+import io.realm.RealmObject;
+
 /**
  * Created by lemuel on 2017/3/1.
  */
 
-public  class CastsBean  {
+
+public  class CastsBean extends RealmObject{
     private String alt;
     private AvatarsBean avatars;
     private String name;
-    private String id;
 
     public String getAlt() {
         return alt;
@@ -32,13 +34,5 @@ public  class CastsBean  {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 }

@@ -23,12 +23,12 @@ import me.lemuel.adore.util.CommentUtil;
 /**
  * Created by lemuel on 2017/2/27.
  */
-public class MovieViewProvider
-        extends ItemViewProvider<SubjectsBean, MovieViewProvider.ViewHolder> {
+public class SubjectProvider
+        extends ItemViewProvider<SubjectsBean, SubjectProvider.ViewHolder> {
 
     private Activity activity;
 
-    public MovieViewProvider(FragmentActivity activity) {
+    public SubjectProvider(FragmentActivity activity) {
         this.activity = activity;
     }
 

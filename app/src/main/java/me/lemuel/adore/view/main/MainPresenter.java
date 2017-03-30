@@ -7,11 +7,15 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.lemuel.adore.U;
 import me.lemuel.adore.app.App;
 import me.lemuel.adore.items.movie.Movie;
 import me.lemuel.adore.items.movie.SubjectsBean;
+
+import static me.lemuel.adore.app.App.getMoviesRealm;
 
 /**
  * Created by lemuel on 2017/2/24.
@@ -53,10 +57,15 @@ public class MainPresenter implements MainContract.Presenter {
                         mainView.hideLoding();
                         List<SubjectsBean> subjects = movie.getSubjects();
                         for (SubjectsBean subject : subjects) {
-                            subject.setHeight((int) (250 + Math.random()*200));//瀑布流高度
+                            subject.setHeight((int) (250 + Math.random() * 200));//瀑布流高度
                             items.add(subject);
+                            insertOrUpdate(subject);
                         }
                         mainView.loadData(items);
+
+
+
+
                     }
 
                     @Override
@@ -71,7 +80,18 @@ public class MainPresenter implements MainContract.Presenter {
                 });
     }
 
+    private void insertOrUpdate(final SubjectsBean subject) {
+        Realm realm = getMoviesRealm();
+        realm.beginTransaction();
+        realm.copyToRealm(subject);
+        realm.commitTransaction();
+    }
+
     public void loadMore() {
-        onCreate();
+        RealmResults<SubjectsBean> all = App.getMoviesRealm().where(SubjectsBean.class).findAll();
+        for (SubjectsBean subject : all) {
+            items.add(subject);
+        }
+        mainView.loadData(items);
     }
 }

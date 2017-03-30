@@ -18,7 +18,7 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.OnLoadMoreListener;
 import me.lemuel.adore.R;
-import me.lemuel.adore.items.movie.MovieViewProvider;
+import me.lemuel.adore.items.movie.SubjectProvider;
 import me.lemuel.adore.items.movie.SubjectsBean;
 
 /**
@@ -50,10 +50,10 @@ public class MainNowFragment extends Fragment
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         refreshLayout.setOnRefreshListener(this);
-        refreshLayout.setRefreshing(true);
+        refreshLayout.setRefreshing(false);
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(3, StaggeredGridLayoutManager.VERTICAL));
         listAdapter = new MultiTypeAdapter();
-        listAdapter.register(SubjectsBean.class, new MovieViewProvider(getActivity()));
+        listAdapter.register(SubjectsBean.class, new SubjectProvider(getActivity()));
         recyclerView.setAdapter(listAdapter);
         DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
         mainPresenter.onCreate();

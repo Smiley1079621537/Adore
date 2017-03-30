@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
@@ -51,6 +52,7 @@ repositories {
 }
 
 
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -82,7 +84,6 @@ dependencies {
     compile 'com.jakewharton.rxbinding2:rxbinding-design:2.0.0'
     compile 'com.geniusforapp.fancydialog:FancyDialog:0.0.4'
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
-    compile 'com.github.AndroidDeveloperLB:AutoFitTextView:4'
     compile 'com.facebook.fresco:fresco:0.12.0'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'

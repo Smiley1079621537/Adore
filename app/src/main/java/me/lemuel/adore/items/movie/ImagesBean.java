@@ -1,10 +1,13 @@
 package me.lemuel.adore.items.movie;
 
+import io.realm.RealmObject;
+
 /**
  * Created by lemuel on 2017/3/1.
  */
 
-public  class ImagesBean  {
+
+public class ImagesBean extends RealmObject{
     private String small;
     private String large;
     private String medium;

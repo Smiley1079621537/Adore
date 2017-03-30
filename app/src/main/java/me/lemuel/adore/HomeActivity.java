@@ -126,8 +126,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         String path = this.getFilesDir() + "/avatar.png";
         File file = new File(path);
         if (file.exists()) {
-            Bitmap bitmap = BitmapFactory.decodeFile(path);
-            mAvatar.setImageBitmap(bitmap);
+            Bitmap avatarBitmap = BitmapFactory.decodeFile(path);
+            mAvatar.setImageBitmap(avatarBitmap);
         }
     }
 
@@ -150,7 +150,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                 break;
                         }
                     }
-                }).show();
+                }).create()
+                .show();
 
     }
 
@@ -190,19 +191,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             //说明是拍照
             Bundle bundle = data.getExtras();
             //获取相机返回的数据，并转换为图片格式
-            Bitmap bitmap = (Bitmap) bundle.get("data");
-            mAvatar.setImageBitmap(bitmap);
+            Bitmap cameraBitmap = (Bitmap) bundle.get("data");
+            mAvatar.setImageBitmap(cameraBitmap);
             //将图片保存在本地
-            BitmapUtil.saveImage(this, bitmap);
+            BitmapUtil.saveImage(this, cameraBitmap);
         } else if (requestCode == REQUEST_ALBUM && resultCode == RESULT_OK && data != null) {
             //图库
             Uri selectedImage = data.getData();
             String pathResult = BitmapUtil.getPath(this, selectedImage);
             //加载存储空间中的图片资源并显示
-            Bitmap decodeFile = BitmapFactory.decodeFile(pathResult);
-            mAvatar.setImageBitmap(decodeFile);
+            Bitmap albumBitmap = BitmapFactory.decodeFile(pathResult);
+            mAvatar.setImageBitmap(albumBitmap);
             //保存图片到本地
-            BitmapUtil.saveImage(this, decodeFile);
+            BitmapUtil.saveImage(this, albumBitmap);
         }
     }
 
@@ -288,5 +289,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }
