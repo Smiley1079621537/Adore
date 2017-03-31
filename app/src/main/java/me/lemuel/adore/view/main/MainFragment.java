@@ -43,8 +43,9 @@ public class MainFragment extends Fragment implements MainContract.View, SwipeRe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final Fragment[] fragments = new Fragment[1];
+        final Fragment[] fragments = new Fragment[2];
         fragments[0] = MainNowFragment.newInstance();
+        fragments[1] = MainNowFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getActivity().getSupportFragmentManager(), fragments);
         tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.going_to_release)});
         viewPager.setAdapter(tabPagerAdapter);
@@ -52,10 +53,6 @@ public class MainFragment extends Fragment implements MainContract.View, SwipeRe
 
     public MainFragment(){
 
-    }
-
-    public void scrollToTop(){
-      //  recyclerView.scrollToPosition(0);
     }
 
     public static MainFragment newInstance() {
@@ -69,28 +66,27 @@ public class MainFragment extends Fragment implements MainContract.View, SwipeRe
 
     @Override
     public void showLoading() {
-      //  refreshLayout.setRefreshing(true);
+
     }
 
     @Override
     public void hideLoding() {
-     //   refreshLayout.setRefreshing(false);
+
     }
 
     @Override
     public void loadData(Items items) {
-      //  listAdapter.setItems(items);
-      //  listAdapter.notifyDataSetChanged();
+
     }
 
 
     @Override
     public void setPresenter(MainPresenter presenter) {
-      //  mMainPresenter = presenter;
+
     }
 
     @Override
     public void onRefresh() {
-       // refreshLayout.setRefreshing(false);
+
     }
 }

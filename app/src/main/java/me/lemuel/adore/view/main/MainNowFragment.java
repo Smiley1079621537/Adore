@@ -40,7 +40,7 @@ public class MainNowFragment extends Fragment
                              @Nullable Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_now, container, false);
         recyclerView = (RecyclerView) root.findViewById(R.id.recyclerview);
-        ((DefaultItemAnimator)recyclerView.getItemAnimator())
+        ((DefaultItemAnimator) recyclerView.getItemAnimator())
                 .setSupportsChangeAnimations(false);//避免notifyDataSetChanged时闪屏
         refreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.refresh);
         return root;
@@ -99,5 +99,9 @@ public class MainNowFragment extends Fragment
 
     public static Fragment newInstance() {
         return new MainNowFragment();
+    }
+
+    public void scrollToTop() {
+        recyclerView.smoothScrollToPosition(0);
     }
 }

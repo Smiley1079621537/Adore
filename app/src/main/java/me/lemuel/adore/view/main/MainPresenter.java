@@ -15,8 +15,6 @@ import me.lemuel.adore.app.App;
 import me.lemuel.adore.items.movie.Movie;
 import me.lemuel.adore.items.movie.SubjectsBean;
 
-import static me.lemuel.adore.app.App.getMoviesRealm;
-
 /**
  * Created by lemuel on 2017/2/24.
  */
@@ -38,13 +36,11 @@ public class MainPresenter implements MainContract.Presenter {
     @Inject
     public void setupListeners() {
         mainView.setPresenter(this);
-
     }
 
     @Override
     public void onCreate() {
-        App.getAppComponent().getDoubanService().getMovies()
-                .compose(composer)
+        App.getAppComponent().getDoubanService().getMovies().compose(composer)
                 .subscribe(new Subscriber<Movie>() {
                     @Override
                     public void onSubscribe(Subscription s) {
@@ -54,23 +50,12 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onNext(Movie movie) {
-                        mainView.hideLoding();
-                        List<SubjectsBean> subjects = movie.getSubjects();
-                        for (SubjectsBean subject : subjects) {
-                            subject.setHeight((int) (250 + Math.random() * 200));//瀑布流高度
-                            items.add(subject);
-                            insertOrUpdate(subject);
-                        }
-                        mainView.loadData(items);
-
-
-
-
+                        dealMovie(movie);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        mainView.hideLoding();
+                        loadCacheSubjects();
                     }
 
                     @Override
@@ -80,18 +65,33 @@ public class MainPresenter implements MainContract.Presenter {
                 });
     }
 
-    private void insertOrUpdate(final SubjectsBean subject) {
-        Realm realm = getMoviesRealm();
+    private void dealMovie(Movie movie) {
+        mainView.hideLoding();
+        items.clear();
+        Realm realm = App.getMoviesRealm();
         realm.beginTransaction();
-        realm.copyToRealm(subject);
+        List<SubjectsBean> subjects = movie.getSubjects();
+        for (SubjectsBean subject : subjects) {
+            subject.setHeight((int) (250 + Math.random() * 200));//瀑布流高度
+            items.add(subject);
+            realm.copyToRealm(subject);
+        }
         realm.commitTransaction();
+        mainView.loadData(items);
     }
 
-    public void loadMore() {
+    void loadMore() {
+        loadCacheSubjects();
+    }
+
+    private void loadCacheSubjects() {
+        mainView.hideLoding();
         RealmResults<SubjectsBean> all = App.getMoviesRealm().where(SubjectsBean.class).findAll();
-        for (SubjectsBean subject : all) {
-            items.add(subject);
+        if (all != null && all.size() > 0) {
+            for (SubjectsBean subject : all) {
+                items.add(subject);
+            }
+            mainView.loadData(items);
         }
-        mainView.loadData(items);
     }
 }

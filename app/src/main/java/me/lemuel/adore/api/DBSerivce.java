@@ -9,6 +9,7 @@ import retrofit2.http.GET;
  */
 
 public interface DBSerivce {
+    //https://api.douban.com/v2/movie/in_theaters
     @GET("v2/movie/in_theaters")
     Flowable<Movie> getMovies();
 }

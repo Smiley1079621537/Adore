@@ -1,7 +1,11 @@
 package me.lemuel.adore.util;
 
+import android.content.Context;
+import android.content.res.TypedArray;
+
 import java.util.List;
 
+import me.lemuel.adore.R;
 import me.lemuel.adore.items.movie.DirectorsBean;
 
 /**
@@ -16,5 +20,13 @@ public class CommentUtil {
             builder.append(director.getName()).append(" / ");
         }
         return builder.substring(0, builder.length() - 2);
+    }
+
+    public static int getToolbarHeight(Context context) {
+        final TypedArray styledAttributes = context.getTheme().obtainStyledAttributes(
+                new int[]{R.attr.actionBarSize});
+        int toolbarHeight = (int) styledAttributes.getDimension(0, 0);
+        styledAttributes.recycle();
+        return toolbarHeight;
     }
 }

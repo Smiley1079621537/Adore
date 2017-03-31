@@ -40,7 +40,6 @@ import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.util.BitmapUtil;
-import me.lemuel.adore.view.main.MainFragment;
 import me.lemuel.adore.view.main.MainNowFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -92,7 +91,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         setAvatar();
 
         final Fragment[] fragments = new Fragment[2];
-        fragments[0] = MainFragment.newInstance();
+        fragments[0] = MainNowFragment.newInstance();
         fragments[1] = MainNowFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
         tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.going_to_release)});
@@ -107,16 +106,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+
+
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!isCollapsed)
                     return;
-                mAppBar.setExpanded(true, true);
                 String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment != null && fragment instanceof MainFragment) {
-                    ((MainFragment) fragment).scrollToTop();
+                if (fragment != null && fragment instanceof MainNowFragment) {
+                    ((MainNowFragment) fragment).scrollToTop();
+                    mAppBar.setExpanded(true, true);
                 }
             }
         });
@@ -230,8 +231,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.action_settings:
                 startActivity(new Intent(this, MainActivity.class));
                 break;
-            case R.id.search:
-
+            case R.id.read:
+                startActivity(new Intent(this,PictureActivity.class));
                 break;
             default:
                 break;

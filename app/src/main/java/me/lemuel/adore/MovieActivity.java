@@ -6,28 +6,45 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.umeng.socialize.UMShareAPI;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import me.lemuel.adore.view.DialogView;
 
 public class MovieActivity extends AppCompatActivity {
+
+    @BindView(R.id.movie_img)
+    SimpleDraweeView mMovieImg;
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+    @BindView(R.id.toolbar_layout)
+    CollapsingToolbarLayout collapsingToolbarLayout;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie);
+        ButterKnife.bind(this);
         setImmersiveStatusbar();
+        setSupportActionBar(mToolbar);
+        //显示左上角的返回按钮
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Lemuel");
+        //不使用左下角的大标题
+        collapsingToolbarLayout.setTitleEnabled(false);
         String imgUrl = getIntent().getStringExtra(getString(R.string.img_url));
         DialogView dialogView = new DialogView();
         dialogView.setImageUrl(imgUrl);
         dialogView.show(getSupportFragmentManager(), "fragment_bottom_dialog");
-        SimpleDraweeView movieImage = (SimpleDraweeView) findViewById(R.id.movie_img);
-        movieImage.setImageURI(Uri.parse(imgUrl));
+        mMovieImg.setImageURI(Uri.parse(imgUrl));
     }
 
     @Override
@@ -55,7 +72,7 @@ public class MovieActivity extends AppCompatActivity {
     }
 
     //透明状态栏
-    public void setTransparentStatusbar(){
+    public void setTransparentStatusbar() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {//透明状态栏
             View decorView = getWindow().getDecorView();
             int option = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN

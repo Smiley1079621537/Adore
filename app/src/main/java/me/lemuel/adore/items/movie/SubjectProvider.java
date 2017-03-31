@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -48,13 +49,17 @@ public class SubjectProvider
         holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
         ViewGroup.LayoutParams lp = holder.pic.getLayoutParams();
         lp.height = movie.getHeight();
-        holder.pic.setLayoutParams(lp);
+        holder.pic.setLayoutParams(lp);//瀑布流效果
         holder.pic.setImageURI(movie.getImages().getLarge());
         holder.pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(activity, holder.pic,
+                                activity.getString(R.string.imageTransition));
                 activity.startActivity(new Intent(activity, MovieActivity.class)
-                        .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()));
+                                .putExtra(activity.getString(R.string.img_url), movie.getImages().getLarge()),
+                        options.toBundle());
             }
         });
     }

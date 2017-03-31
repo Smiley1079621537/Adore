@@ -16,6 +16,7 @@ public abstract class OnLoadMoreListener extends RecyclerView.OnScrollListener {
 
     public abstract void onLoadMore();
 
+
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
         StaggeredGridLayoutManager manager = (StaggeredGridLayoutManager) recyclerView.getLayoutManager();

@@ -53,7 +53,24 @@
             android:name=".BottomActivity"
             android:label="@string/title_activity_bottom">
         </activity>
+        <activity
+            android:name=".PictureActivity"
+            android:label="@string/title_activity_picture"
+            android:theme="@style/AppTheme">
+        </activity>
 
+        <activity android:name=".demo.image.ImageActivity"/>
+        <activity android:name=".demo.image.ImageDetailActivity"/>
+        <activity android:name=".demo.recyclerview.RvActivity"/>
+        <activity android:name=".demo.recyclerview.RvDetailActivity"/>
+        <activity android:name=".demo.fab.FabActivity"/>
+        <activity android:name=".demo.fab.FabCircleActivity"/>
+        <activity android:name=".demo.fab.FabNoCircleActivity"/>
+        <activity android:name=".demo.fab.ButtonActivity"/>
+        <activity android:name=".demo.fragment.FActivity"/>
+        <activity android:name=".demo.fragment.FDetailActivity"/>
+        <activity android:name=".demo.intent.IntentActivity"/>
+        <activity android:name=".demo.intent.IntentDetailActivity"/>
     </application>
 
 </manifest>

@@ -49,12 +49,17 @@ public class App extends Application {
         LeakCanary.install(this);
         UMShareAPI.get(this);
         Config.DEBUG = true;
+        initCalligraphy();
+        Realm.init(this);
+
+    }
+
+    //字体配置
+    private void initCalligraphy() {
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/app.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build());
-        Realm.init(this);
-
     }
 
     //电影数据

@@ -10,18 +10,31 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AppManager {
 
-    private static Retrofit mRetrofit = null;
-    private final static String BASE_URL = "https://api.douban.com/";
+    private static Retrofit MovieRetrofit = null;
+    private final static String MOVIE_URL = "https://api.douban.com/";
+    private final static String TRANSLATE_URL = "http://fanyi.youdao.com/";
+    private static Retrofit translatorRetrofit;
 
     public static Retrofit getDBRetrofit() {
-        if (mRetrofit == null) {
-            mRetrofit = new Retrofit.Builder()
-                    .baseUrl(BASE_URL)
+        if (MovieRetrofit == null) {
+            MovieRetrofit = new Retrofit.Builder()
+                    .baseUrl(MOVIE_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();
         }
-        return mRetrofit;
+        return MovieRetrofit;
+    }
+
+    public static Retrofit getTranslatorRetrofit() {
+        if (translatorRetrofit == null) {
+            translatorRetrofit = new Retrofit.Builder()
+                    .baseUrl(TRANSLATE_URL)
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return translatorRetrofit;
     }
 
 }
