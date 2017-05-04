@@ -3,7 +3,7 @@ package me.lemuel.adore.util;
 import android.support.annotation.StringRes;
 import android.widget.Toast;
 
-import me.lemuel.adore.app.App;
+import me.lemuel.adore.App;
 
 public class ToastUtils {
 

@@ -1,7 +1,7 @@
 package me.lemuel.adore.api;
 
 import io.reactivex.Flowable;
-import me.lemuel.adore.items.movie.Movie;
+import me.lemuel.adore.bean.movie.Movie;
 import retrofit2.http.GET;
 
 /**
