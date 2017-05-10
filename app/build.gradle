@@ -86,6 +86,8 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.2.0'
     compile 'com.facebook.fresco:fresco:0.12.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'jp.wasabeef:fresco-processors:2.1.0'
     testCompile 'junit:junit:4.12'
     testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5'
     apt 'com.jakewharton:butterknife-compiler:8.5.1'

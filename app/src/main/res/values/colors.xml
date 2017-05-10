@@ -6,4 +6,18 @@
     <color name="tabIndicatorColor">#ffffff</color>
     <color name="showmethod_start_color">#FFFFFF</color>
     <color name="showmethod_end_color">#C8C8C8</color>
+
+    <color name="white">@android:color/white</color>
+    <color name="black">@android:color/black</color>
+    <color name="red">#F44336</color>
+    <color name="blue">#2196F3</color>
+    <color name="grey">#9E9E9E</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_900">#212121</color>
+    <color name="translucent_white">#80FFFFFF</color>
+    <color name="translucent_black">#80000000</color>
+    <color name="translucent_grey">#809E9E9E</color>
+    <color name="translucent_white_8p">#14FFFFFF</color>
+    <color name="translucent_white_16p">#29FFFFFF</color>
+    <color name="translucent_white_24p">#3DFFFFFF</color>
 </resources>

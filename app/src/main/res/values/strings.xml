@@ -107,4 +107,5 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="imageTransition">movieImage</string>
+    <string name="immanuel">Immanuel</string>
 </resources>

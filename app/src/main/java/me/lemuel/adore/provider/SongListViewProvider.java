@@ -11,13 +11,13 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
-import me.lemuel.adore.bean.SongList;
+import me.lemuel.adore.bean.SongListInfo;
 
 /**
  * Created by lemuel on 2017/05/08.
  */
 public class SongListViewProvider
-        extends ItemViewProvider<SongList, SongListViewProvider.ViewHolder> {
+        extends ItemViewProvider<SongListInfo, SongListViewProvider.ViewHolder> {
 
     @NonNull
     @Override
@@ -28,11 +28,11 @@ public class SongListViewProvider
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull SongList songList) {
-       // holder.mIvCover.setImageURI(songList.getCoverUrl());
-        holder.mTvMusic1.setText(songList.getTitle());
-        holder.mTvMusic2.setText(songList.getType());
-        holder.mTvMusic3.setText(songList.getMusic3());
+    protected void onBindViewHolder(@NonNull ViewHolder holder, @NonNull SongListInfo songListInfo) {
+       // holder.mIvCover.setImageURI(songListInfo.getCoverUrl());
+        holder.mTvMusic1.setText(songListInfo.getTitle());
+        holder.mTvMusic2.setText(songListInfo.getType());
+        holder.mTvMusic3.setText(songListInfo.getMusic3());
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

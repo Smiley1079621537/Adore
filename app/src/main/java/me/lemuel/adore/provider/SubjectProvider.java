@@ -60,7 +60,8 @@ public class SubjectProvider
                 String transitionName = activity.getString(R.string.imageTransition);
                 ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat
                         .makeSceneTransitionAnimation(activity, sharedView, transitionName);
-                activity.startActivity(i.putExtra("image", movie.getImages().getLarge()), transitionActivityOptions.toBundle());
+                activity.startActivity(i.putExtra("image", movie.getImages().getLarge()),
+                        transitionActivityOptions.toBundle());
             }
         });
     }

@@ -31,7 +31,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="1.加载中…"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_music_2"
@@ -41,7 +41,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="2.加载中…"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tv_music_3"
@@ -51,7 +51,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:text="3.加载中…"
-                android:textSize="12sp" />
+                android:textSize="14sp" />
         </LinearLayout>
     </LinearLayout>
 

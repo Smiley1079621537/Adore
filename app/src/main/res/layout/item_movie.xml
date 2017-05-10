@@ -16,7 +16,6 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/movie_pic"
-            android:transitionName="@string/imageTransition"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"/>

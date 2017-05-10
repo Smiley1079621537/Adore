@@ -15,7 +15,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.SongListAdapter;
-import me.lemuel.adore.bean.SongList;
+import me.lemuel.adore.bean.SongListInfo;
 import me.lemuel.adore.util.NetworkUtils;
 
 /**
@@ -25,11 +25,12 @@ public class OnlineMusicFragment extends Fragment {
 
     @BindView(R.id.lv_song_list)
     RecyclerView mLvSongList;
-    private ArrayList<SongList> mSongLists = new ArrayList<>();
+    private ArrayList<SongListInfo> mSongListInfos = new ArrayList<>();
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_song_list, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -42,24 +43,18 @@ public class OnlineMusicFragment extends Fragment {
         if (!NetworkUtils.isNetworkAvailable(getContext())) {
             return;
         }
-        //mSongLists = AppCache.getSongListInfos();
-        if (mSongLists.isEmpty()) {
+        if (mSongListInfos.isEmpty()) {
             String[] titles = getResources().getStringArray(R.array.online_music_list_title);
             String[] types = getResources().getStringArray(R.array.online_music_list_type);
             for (int i = 0; i < titles.length; i++) {
-                SongList info = new SongList();
+                SongListInfo info = new SongListInfo();
                 info.setTitle(titles[i]);
                 info.setType(types[i]);
-                mSongLists.add(info);
+                mSongListInfos.add(info);
             }
         }
         mLvSongList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        /*MultiTypeAdapter adapter = new MultiTypeAdapter();
-        adapter.register(SongList.class, new SongListViewProvider());
-        mLvSongList.setAdapter(adapter);
-        adapter.setItems(mSongLists);
-        adapter.notifyDataSetChanged();*/
-        SongListAdapter adapter = new SongListAdapter(mSongLists);
+        SongListAdapter adapter = new SongListAdapter(mSongListInfos);
         mLvSongList.setAdapter(adapter);
     }
 

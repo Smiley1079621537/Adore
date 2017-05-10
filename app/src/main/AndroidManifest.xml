@@ -53,6 +53,9 @@
             android:name=".activity.BottomActivity"
             android:label="@string/title_activity_bottom">
         </activity>
+        <activity android:name=".activity.OnlineMusicActivity">
+        </activity>
+        <service android:name=".service.PlayMusicService"/>
     </application>
 
 </manifest>

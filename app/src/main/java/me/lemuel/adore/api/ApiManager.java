@@ -1,6 +1,5 @@
 package me.lemuel.adore.api;
 
-import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -11,10 +10,10 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiManager {
 
-    private static Retrofit MovieRetrofit = null;
     private final static String MOVIE_URL = "https://api.douban.com/";
     private final static String TRANSLATE_URL = "http://fanyi.youdao.com/";
     private static final String ONLINE_MUSIC_URL = "http://tingapi.ting.baidu.com";
+    private static Retrofit MovieRetrofit;
     private static Retrofit translatorRetrofit;
     private static Retrofit onlineMusicRetrofit;
 
@@ -46,7 +45,6 @@ public class ApiManager {
                     .baseUrl(ONLINE_MUSIC_URL)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create())
-                    .client(new OkHttpClient.Builder().build())
                     .build();
         }
         return onlineMusicRetrofit;

@@ -1,5 +1,7 @@
 package me.lemuel.adore.adapter;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,16 +20,19 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.lemuel.adore.App;
 import me.lemuel.adore.R;
+import me.lemuel.adore.activity.OnlineMusicActivity;
+import me.lemuel.adore.base.Extras;
 import me.lemuel.adore.bean.OnlineMusic;
 import me.lemuel.adore.bean.OnlineMusicList;
-import me.lemuel.adore.bean.SongList;
+import me.lemuel.adore.bean.SongListInfo;
 
 public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_PROFILE = 0;
     private static final int TYPE_MUSIC_LIST = 1;
-    private ArrayList<SongList> mData;
+    private ArrayList<SongListInfo> mData;
+    private Context mContext;
 
-    public SongListAdapter(ArrayList<SongList> data) {
+    public SongListAdapter(ArrayList<SongListInfo> data) {
         mData = data;
     }
 
@@ -40,6 +45,7 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         RecyclerView.ViewHolder holder = null;
+        mContext = parent.getContext();
         switch (viewType) {
             case TYPE_PROFILE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lable, parent, false);
@@ -55,13 +61,20 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderProfile) {
-            Log.d("Immanuel", "ViewHolderProfile" + position);
-                ((ViewHolderProfile) holder).tvProfile.setText(mData.get(position).getTitle());
+            ((ViewHolderProfile) holder).tvProfile.setText(mData.get(position).getTitle());
         } else if (holder instanceof ViewHolderMusicList) {
-            Log.d("Immanuel", "ViewHolderMusicList" + position);
             getMusicListInfo(mData.get(position), (ViewHolderMusicList) holder);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
+                    Intent intent = new Intent(mContext, OnlineMusicActivity.class);
+                    intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -75,22 +88,22 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private void getMusicListInfo(final SongList songListInfo, final ViewHolderMusicList holderMusicList) {
-        if (songListInfo.getCoverUrl() == null) {
-            holderMusicList.ivCover.setTag(songListInfo.getTitle());
+    private void getMusicListInfo(final SongListInfo songListInfoInfo, final ViewHolderMusicList holderMusicList) {
+        if (songListInfoInfo.getCoverUrl() == null) {
+            holderMusicList.ivCover.setTag(songListInfoInfo.getTitle());
             holderMusicList.ivCover.setImageURI(String.valueOf(R.drawable.default_cover));
-            /*holderMusicList.tvMusic1.setText("加载中…");
+            holderMusicList.tvMusic1.setText("加载中…");
             holderMusicList.tvMusic2.setText("加载中…");
-            holderMusicList.tvMusic3.setText("加载中…");*/
-            getOnlineMusic(songListInfo, holderMusicList);
+            holderMusicList.tvMusic3.setText("加载中…");
+            getOnlineMusic(songListInfoInfo, holderMusicList);
         } else {
             holderMusicList.ivCover.setTag(null);
-            setData(songListInfo, holderMusicList);
+            setData(songListInfoInfo, holderMusicList);
         }
     }
 
-    private void getOnlineMusic(final SongList songListInfo, final ViewHolderMusicList holderMusicList) {
-        App.getAppComponent().getOnlineMusicService().getSongList(songListInfo.getType(), "3", "0")
+    private void getOnlineMusic(final SongListInfo songListInfoInfo, final ViewHolderMusicList holderMusicList) {
+        App.getAppComponent().getOnlineMusicService().getSongList(songListInfoInfo.getType(), "3", "0")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<OnlineMusicList>() {
@@ -101,14 +114,14 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
                     @Override
                     public void onNext(OnlineMusicList onlineMusicList) {
-                        songListInfo.setCoverUrl(onlineMusicList.getBillboard().getPic_s444());
-                        updateSongListInfo(onlineMusicList, songListInfo);
-                        setData(songListInfo, holderMusicList);
+                        songListInfoInfo.setCoverUrl(onlineMusicList.getBillboard().getPic_s640());
+                        updateSongListInfo(onlineMusicList, songListInfoInfo);
+                        setData(songListInfoInfo, holderMusicList);
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        Log.d("imm",t.toString());
+                        Log.d("imm", t.toString());
                     }
 
                     @Override
@@ -118,30 +131,30 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 });
     }
 
-    private void updateSongListInfo(OnlineMusicList onlineMusicList, SongList songListInfo) {
+    private void updateSongListInfo(OnlineMusicList onlineMusicList, SongListInfo songListInfoInfo) {
         ArrayList<OnlineMusic> songList = onlineMusicList.getSong_list();
         if (songList.size() >= 1) {
-            songListInfo.setMusic1(songList.get(0).getTitle() + "--" + songList.get(0).getArtist_name());
+            songListInfoInfo.setMusic1("1."+songList.get(0).getTitle() + "--" + songList.get(0).getArtist_name());
         } else {
-            songListInfo.setMusic1("");
+            songListInfoInfo.setMusic1("");
         }
         if (songList.size() >= 2) {
-            songListInfo.setMusic2(songList.get(1).getTitle() + "--" + songList.get(1).getArtist_name());
+            songListInfoInfo.setMusic2("2."+songList.get(1).getTitle() + "--" + songList.get(1).getArtist_name());
         } else {
-            songListInfo.setMusic2("");
+            songListInfoInfo.setMusic2("");
         }
         if (songList.size() >= 3) {
-            songListInfo.setMusic3(songList.get(2).getTitle() + "--" + songList.get(2).getArtist_name());
+            songListInfoInfo.setMusic3("3."+songList.get(2).getTitle() + "--" + songList.get(2).getArtist_name());
         } else {
-            songListInfo.setMusic3("");
+            songListInfoInfo.setMusic3("");
         }
     }
 
-    private void setData(SongList songListInfo, ViewHolderMusicList holderMusicList) {
-        holderMusicList.ivCover.setImageURI(songListInfo.getCoverUrl());
-        holderMusicList.tvMusic1.setText(songListInfo.getMusic1());
-        holderMusicList.tvMusic2.setText(songListInfo.getMusic2());
-        holderMusicList.tvMusic3.setText(songListInfo.getMusic3());
+    private void setData(final SongListInfo songListInfoInfo, ViewHolderMusicList holderMusicList) {
+        holderMusicList.ivCover.setImageURI(songListInfoInfo.getCoverUrl());
+        holderMusicList.tvMusic1.setText(songListInfoInfo.getMusic1());
+        holderMusicList.tvMusic2.setText(songListInfoInfo.getMusic2());
+        holderMusicList.tvMusic3.setText(songListInfoInfo.getMusic3());
     }
 
     private static class ViewHolderProfile extends RecyclerView.ViewHolder {

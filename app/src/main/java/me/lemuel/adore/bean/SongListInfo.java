@@ -1,9 +1,12 @@
 package me.lemuel.adore.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by lemuel on 2017/05/08.
  */
-public class SongList {
+public class SongListInfo implements Parcelable{
 
     /**
      * #主打榜单
@@ -29,6 +32,31 @@ public class SongList {
     private String music1;
     private String music2;
     private String music3;
+
+    public SongListInfo(){
+
+    }
+
+    protected SongListInfo(Parcel in) {
+        title = in.readString();
+        type = in.readString();
+        coverUrl = in.readString();
+        music1 = in.readString();
+        music2 = in.readString();
+        music3 = in.readString();
+    }
+
+    public static final Creator<SongListInfo> CREATOR = new Creator<SongListInfo>() {
+        @Override
+        public SongListInfo createFromParcel(Parcel in) {
+            return new SongListInfo(in);
+        }
+
+        @Override
+        public SongListInfo[] newArray(int size) {
+            return new SongListInfo[size];
+        }
+    };
 
     public String getTitle() {
         return title;
@@ -76,5 +104,20 @@ public class SongList {
 
     public void setMusic3(String music3) {
         this.music3 = music3;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(type);
+        dest.writeString(coverUrl);
+        dest.writeString(music1);
+        dest.writeString(music2);
+        dest.writeString(music3);
     }
 }
