@@ -3,7 +3,6 @@ package me.lemuel.adore.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -37,11 +36,12 @@ import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.App;
 import me.lemuel.adore.R;
 import me.lemuel.adore.base.Extras;
-import me.lemuel.adore.bean.BillboardViewProvider;
-import me.lemuel.adore.bean.Music;
-import me.lemuel.adore.bean.OnlineMusic;
-import me.lemuel.adore.bean.OnlineMusicList;
-import me.lemuel.adore.bean.SongListInfo;
+import me.lemuel.adore.bean.music.Music;
+import me.lemuel.adore.bean.music.OnlineMusic;
+import me.lemuel.adore.bean.music.OnlineMusicList;
+import me.lemuel.adore.bean.music.SongListInfo;
+import me.lemuel.adore.fragment.DialogView;
+import me.lemuel.adore.provider.BillboardViewProvider;
 import me.lemuel.adore.provider.OnlineMusicViewProvider;
 import me.lemuel.adore.service.PlayMusicService;
 
@@ -128,7 +128,8 @@ public class OnlineMusicActivity extends AppCompatActivity {
         OnlineMusicViewProvider musicViewProvider = new OnlineMusicViewProvider();
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbarLayout.setTitle("Immanuel");
+        getSupportActionBar().setTitle("Immanuel");
+        mToolbarLayout.setTitleEnabled(false);
         mAdapter = new MultiTypeAdapter();
         mAdapter.register(OnlineMusicList.Billboard.class, new BillboardViewProvider());
         mAdapter.register(OnlineMusic.class, musicViewProvider);
@@ -151,8 +152,8 @@ public class OnlineMusicActivity extends AppCompatActivity {
                             @Override
                             public void onNext(Music music) {
                                 Log.i("LM - onNext:",music.toString());
-                                startService(new Intent(OnlineMusicActivity.this, PlayMusicService.class)
-                                .putExtra("music",music));
+                                startService(new Intent(OnlineMusicActivity.this, PlayMusicService.class).putExtra("music",music));
+                                mToolbar.setTitle(music.getSonginfo().getTitle());
                             }
 
                             @Override
@@ -167,6 +168,12 @@ public class OnlineMusicActivity extends AppCompatActivity {
                         });
             }
         });
+    }
+
+    private void showBottomDialog(String imgUrl) {
+        DialogView dialogView = new DialogView();
+        dialogView.setImageUrl(imgUrl);
+        dialogView.show(getSupportFragmentManager(), "fragment_bottom_dialog");
     }
 
     /**
@@ -194,13 +201,11 @@ public class OnlineMusicActivity extends AppCompatActivity {
      * @param activity 需要设置的activity
      */
     public static void setTranslucent(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            // 设置状态栏透明
-            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // 设置根布局的参数
-            ViewGroup rootView = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-            rootView.setFitsSystemWindows(true);
-            rootView.setClipToPadding(true);
-        }
+        // 设置状态栏透明
+        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        // 设置根布局的参数
+        ViewGroup rootView = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
+        rootView.setFitsSystemWindows(true);
+        rootView.setClipToPadding(true);
     }
 }

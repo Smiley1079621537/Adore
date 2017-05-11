@@ -2,6 +2,8 @@ package me.lemuel.adore.presenter;
 
 import android.util.Log;
 
+import com.blankj.utilcode.util.ToastUtils;
+
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -15,11 +17,10 @@ import io.realm.Realm;
 import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.lemuel.adore.App;
-import me.lemuel.adore.fragment.MainNowFragment;
 import me.lemuel.adore.bean.movie.Movie;
 import me.lemuel.adore.bean.movie.SubjectsBean;
 import me.lemuel.adore.contract.MainContract;
-import me.lemuel.adore.util.ToastUtils;
+import me.lemuel.adore.fragment.MainNowFragment;
 
 /**
  * Created by Immanuel on 2017/2/24.
@@ -59,7 +60,7 @@ public class MainPresenter implements MainContract.Presenter {
 
                     @Override
                     public void onError(Throwable t) {
-                        ToastUtils.showShortToast(t.getMessage());
+                        ToastUtils.showShortSafe(t.getMessage());
                     }
 
                     @Override

@@ -30,6 +30,7 @@
         <activity
             android:name=".activity.HomeActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -56,6 +57,7 @@
         <activity android:name=".activity.OnlineMusicActivity">
         </activity>
         <service android:name=".service.PlayMusicService"/>
+
     </application>
 
 </manifest>

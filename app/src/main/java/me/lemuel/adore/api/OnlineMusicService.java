@@ -1,8 +1,8 @@
 package me.lemuel.adore.api;
 
 import io.reactivex.Flowable;
-import me.lemuel.adore.bean.Music;
-import me.lemuel.adore.bean.OnlineMusicList;
+import me.lemuel.adore.bean.music.Music;
+import me.lemuel.adore.bean.music.OnlineMusicList;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.Query;

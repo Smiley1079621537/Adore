@@ -9,14 +9,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.blankj.utilcode.util.NetworkUtils;
+import com.blankj.utilcode.util.ToastUtils;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.SongListAdapter;
-import me.lemuel.adore.bean.SongListInfo;
-import me.lemuel.adore.util.NetworkUtils;
+import me.lemuel.adore.bean.music.SongListInfo;
 
 /**
  * Created by lemuel on 2017/05/08.
@@ -40,7 +42,8 @@ public class OnlineMusicFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!NetworkUtils.isNetworkAvailable(getContext())) {
+        if (!NetworkUtils.isAvailableByPing()) {
+            ToastUtils.showShortSafe("网络开小差了~~");
             return;
         }
         if (mSongListInfos.isEmpty()) {

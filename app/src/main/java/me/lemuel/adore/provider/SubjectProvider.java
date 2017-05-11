@@ -2,9 +2,7 @@ package me.lemuel.adore.provider;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +15,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import me.drakeet.multitype.ItemViewProvider;
-import me.lemuel.adore.activity.MovieActivity;
 import me.lemuel.adore.R;
+import me.lemuel.adore.activity.MovieActivity;
 import me.lemuel.adore.bean.movie.SubjectsBean;
 import me.lemuel.adore.util.CommentUtil;
 
@@ -42,7 +40,6 @@ public class SubjectProvider
         return new ViewHolder(root);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final SubjectsBean movie) {
         holder.title.setText(movie.getTitle());

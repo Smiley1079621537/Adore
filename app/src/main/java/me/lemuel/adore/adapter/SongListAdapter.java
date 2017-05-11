@@ -22,9 +22,9 @@ import me.lemuel.adore.App;
 import me.lemuel.adore.R;
 import me.lemuel.adore.activity.OnlineMusicActivity;
 import me.lemuel.adore.base.Extras;
-import me.lemuel.adore.bean.OnlineMusic;
-import me.lemuel.adore.bean.OnlineMusicList;
-import me.lemuel.adore.bean.SongListInfo;
+import me.lemuel.adore.bean.music.OnlineMusic;
+import me.lemuel.adore.bean.music.OnlineMusicList;
+import me.lemuel.adore.bean.music.SongListInfo;
 
 public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_PROFILE = 0;

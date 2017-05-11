@@ -1,6 +1,5 @@
-package me.lemuel.adore.bean;
+package me.lemuel.adore.provider;
 
-import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +14,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
+import me.lemuel.adore.bean.music.OnlineMusicList;
 
 
 /**
@@ -23,14 +23,11 @@ import me.lemuel.adore.R;
 public class BillboardViewProvider
         extends ItemViewProvider<OnlineMusicList.Billboard, BillboardViewProvider.ViewHolder> {
 
-    private Context mContext;
-
     @NonNull
     @Override
     protected ViewHolder onCreateViewHolder(
             @NonNull LayoutInflater inflater, @NonNull ViewGroup parent) {
         View root = inflater.inflate(R.layout.layout_list_header, parent, false);
-        mContext = parent.getContext();
         return new ViewHolder(root);
     }
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
@@ -29,7 +30,6 @@ import me.lemuel.adore.R;
 import me.lemuel.adore.bean.translate.Word;
 import me.lemuel.adore.fragment.DialogView;
 import me.lemuel.adore.util.CommentUtil;
-import me.lemuel.adore.util.ToastUtils;
 
 public class MovieActivity extends AppCompatActivity {
 
@@ -102,9 +102,9 @@ public class MovieActivity extends AppCompatActivity {
                 if (null != word) {
                     int errorCode = word.getErrorCode();
                     if (errorCode == 20) {
-                        ToastUtils.showShortToast("要翻译的文本过长");
+                        ToastUtils.showShortSafe("要翻译的文本过长");
                     } else if (errorCode == 40) {
-                        ToastUtils.showShortToast("不支持该语言");
+                        ToastUtils.showShortSafe("不支持该语言");
                     } else if (errorCode == 0) {
                         mTranslateResult.setText("");
                         mTranslateResult.setText(word.getTranslation().get(0));

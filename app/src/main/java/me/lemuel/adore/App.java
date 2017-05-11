@@ -4,6 +4,7 @@ package me.lemuel.adore;
 import android.annotation.SuppressLint;
 import android.app.Application;
 
+import com.blankj.utilcode.util.Utils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.Config;
@@ -51,6 +52,7 @@ public class App extends Application {
         Config.DEBUG = true;
         // initCalligraphy();
         Realm.init(this);
+        Utils.init(this);
     }
 
     //字体配置

@@ -1,4 +1,4 @@
-package me.lemuel.adore.bean;
+package me.lemuel.adore.bean.music;
 
 import com.google.gson.annotations.SerializedName;
 

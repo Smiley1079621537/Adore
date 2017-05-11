@@ -1,4 +1,4 @@
-package me.lemuel.adore.bean;
+package me.lemuel.adore.bean.music;
 
 import android.os.Parcel;
 import android.os.Parcelable;
