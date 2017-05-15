@@ -66,14 +66,11 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             ((ViewHolderProfile) holder).tvProfile.setText(mData.get(position).getTitle());
         } else if (holder instanceof ViewHolderMusicList) {
             getMusicListInfo(mData.get(position), (ViewHolderMusicList) holder);
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
-                    Intent intent = new Intent(mContext, OnlineMusicActivity.class);
-                    intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
-                    mContext.startActivity(intent);
-                }
+            holder.itemView.setOnClickListener(v -> {
+                SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
+                Intent intent = new Intent(mContext, OnlineMusicActivity.class);
+                intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
+                mContext.startActivity(intent);
             });
         }
     }

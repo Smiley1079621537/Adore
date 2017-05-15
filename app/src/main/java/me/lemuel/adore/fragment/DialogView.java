@@ -37,12 +37,7 @@ public class DialogView extends DialogFragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // 设置Content前设定
         View view = LayoutInflater.from(getContext()).inflate(R.layout.dialogview,null);
         ImageView imageView = (ImageView) view.findViewById(R.id.dialog_image);
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+        imageView.setOnClickListener(v -> dialog.cancel());
         dialog.setContentView(view);
         dialog.setCanceledOnTouchOutside(false); // 外部点击不取消
         // 设置宽度为屏宽, 靠近屏幕底部。

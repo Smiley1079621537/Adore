@@ -82,30 +82,27 @@ public class PlayMusicService extends Service {
             mRemoteViews.setTextViewText(R.id.notify_title, music.getSonginfo().getTitle());
             mRemoteViews.setTextViewText(R.id.notify_artist, music.getSonginfo().getAuthor());
             mNotificationManager.notify(NOTIFY_ID, mNotification);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        URL url = new URL(music.getSonginfo().getPic_radio());
-                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                        conn.setConnectTimeout(5000);
-                        conn.setRequestMethod("GET");
-                        if (conn.getResponseCode() == 200) {
-                            InputStream inputStream = conn.getInputStream();
-                            mBitmap = ImageUtils.getBitmap(inputStream);
-                            mRemoteViews.setImageViewBitmap(R.id.notify_picture, mBitmap);
-                        } else {
-                            mRemoteViews.setImageViewResource(R.id.notify_picture, R.drawable.notify);
-                        }
-                        mNotificationManager.notify(NOTIFY_ID, mNotification);
-                    }
-                    catch (OutOfMemoryError e){
+            new Thread(() -> {
+                try {
+                    URL url = new URL(music.getSonginfo().getPic_radio());
+                    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                    conn.setConnectTimeout(5000);
+                    conn.setRequestMethod("GET");
+                    if (conn.getResponseCode() == 200) {
+                        InputStream inputStream = conn.getInputStream();
+                        mBitmap = ImageUtils.getBitmap(inputStream);
                         mRemoteViews.setImageViewBitmap(R.id.notify_picture, mBitmap);
-                        mNotificationManager.notify(NOTIFY_ID, mNotification);
+                    } else {
+                        mRemoteViews.setImageViewResource(R.id.notify_picture, R.drawable.notify);
                     }
-                    catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    mNotificationManager.notify(NOTIFY_ID, mNotification);
+                }
+                catch (OutOfMemoryError e){
+                    mRemoteViews.setImageViewBitmap(R.id.notify_picture, mBitmap);
+                    mNotificationManager.notify(NOTIFY_ID, mNotification);
+                }
+                catch (IOException e) {
+                    e.printStackTrace();
                 }
             }).start();
             try {
@@ -113,21 +110,15 @@ public class PlayMusicService extends Service {
                 mPlayer.setDataSource(music.getBitrate().getFile_link());
                 mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);// 设置媒体流类型
                 mPlayer.prepareAsync();
-                mPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                    @Override
-                    public void onPrepared(MediaPlayer mp) {
-                        mp.start();
-                        mRemoteViews.setImageViewResource(R.id.notify_playPause,android.R.drawable.ic_media_pause);
-                        mNotificationManager.notify(NOTIFY_ID,mNotification);
-                    }
+                mPlayer.setOnPreparedListener(mp -> {
+                    mp.start();
+                    mRemoteViews.setImageViewResource(R.id.notify_playPause,android.R.drawable.ic_media_pause);
+                    mNotificationManager.notify(NOTIFY_ID,mNotification);
                 });
-                mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                    @Override
-                    public void onCompletion(MediaPlayer mp) {
-                        mp.pause();
-                        mRemoteViews.setImageViewResource(R.id.notify_playPause,android.R.drawable.ic_media_play);
-                        mNotificationManager.notify(NOTIFY_ID,mNotification);
-                    }
+                mPlayer.setOnCompletionListener(mp -> {
+                    mp.pause();
+                    mRemoteViews.setImageViewResource(R.id.notify_playPause,android.R.drawable.ic_media_play);
+                    mNotificationManager.notify(NOTIFY_ID,mNotification);
                 });
             } catch (IOException e) {
                 e.printStackTrace();

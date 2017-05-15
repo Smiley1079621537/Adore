@@ -7,7 +7,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -21,9 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import me.lemuel.adore.App;
 import me.lemuel.adore.R;
@@ -62,21 +59,11 @@ public class MovieActivity extends AppCompatActivity {
         collapsingToolbarLayout.setTitleEnabled(false);
         final String imgUrl = getIntent().getStringExtra("image");
         mMovieImg.setImageURI(imgUrl);
-        mFab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showBottomDialog(imgUrl);
-            }
-        });
+        mFab.setOnClickListener(v -> showBottomDialog(imgUrl));
 
         RxTextView.textChanges(mSearchTranslate)
                 .debounce(500, TimeUnit.MILLISECONDS)
-                .subscribe(new Consumer<CharSequence>() {
-                    @Override
-                    public void accept(@NonNull CharSequence charSequence) throws Exception {
-                       doTranslateSearch(charSequence.toString().trim());
-                    }
-                });
+                .subscribe(charSequence -> doTranslateSearch(charSequence.toString().trim()));
     }
 
     private void showBottomDialog(String imgUrl) {

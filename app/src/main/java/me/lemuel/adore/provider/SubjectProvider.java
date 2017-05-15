@@ -49,17 +49,14 @@ public class SubjectProvider
         lp.height = movie.getHeight();
         holder.pic.setLayoutParams(lp);//瀑布流效果
         holder.pic.setImageURI(movie.getImages().getLarge());
-        holder.pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(activity, MovieActivity.class);
-                View sharedView = holder.pic;
-                String transitionName = activity.getString(R.string.imageTransition);
-                ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(activity, sharedView, transitionName);
-                activity.startActivity(i.putExtra("image", movie.getImages().getLarge()),
-                        transitionActivityOptions.toBundle());
-            }
+        holder.pic.setOnClickListener(v -> {
+            Intent i = new Intent(activity, MovieActivity.class);
+            View sharedView = holder.pic;
+            String transitionName = activity.getString(R.string.imageTransition);
+            ActivityOptionsCompat transitionActivityOptions = ActivityOptionsCompat
+                    .makeSceneTransitionAnimation(activity, sharedView, transitionName);
+            activity.startActivity(i.putExtra("image", movie.getImages().getLarge()),
+                    transitionActivityOptions.toBundle());
         });
     }
 

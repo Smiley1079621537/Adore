@@ -38,12 +38,9 @@ public class OnlineMusicViewProvider
         holder.mIvCover.setImageURI(Uri.parse(onlineMusic.getPic_big()));
         holder.mTvTitle.setText(onlineMusic.getTitle());
         holder.mTvArtist.setText(onlineMusic.getArtist_name()+" - "+onlineMusic.getAlbum_title());
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mOnMusicClick!=null){
-                    mOnMusicClick.onItemMusicClick(onlineMusic);
-                }
+        holder.itemView.setOnClickListener(v -> {
+            if (mOnMusicClick!=null){
+                mOnMusicClick.onItemMusicClick(onlineMusic);
             }
         });
     }

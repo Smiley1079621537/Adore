@@ -1,8 +1,6 @@
 package me.lemuel.adore.activity;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,25 +22,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.FileUtils;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
-
-import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.TabPagerAdapter;
+import me.lemuel.adore.fragment.MainNowFragment;
 import me.lemuel.adore.fragment.OnlineMusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
-import me.lemuel.adore.fragment.MainNowFragment;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -81,12 +77,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         mNavView.setNavigationItemSelectedListener(this);
         mAvatar = (ImageView) mNavView.getHeaderView(0).findViewById(R.id.avatar);
-        mAvatar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawer.closeDrawers();
-                showAvatarAlert();
-            }
+        mAvatar.setOnClickListener(v -> {
+            drawer.closeDrawers();
+            showAvatarAlert();
         });
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
 
@@ -102,31 +95,24 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         viewPager.setAdapter(tabPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
-        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-            @Override
-            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-                isCollapsed = verticalOffset < 0; // 监听AppBar是否被折叠
-            }
+        mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
+            isCollapsed = verticalOffset < 0; // 监听AppBar是否被折叠
         });
-        fb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (!isCollapsed)
-                    return;
-                String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-                if (fragment != null && fragment instanceof MainNowFragment) {
-                    ((MainNowFragment) fragment).scrollToTop();
-                    mAppBar.setExpanded(true, true);
-                }
+        fb.setOnClickListener(v -> {
+            if (!isCollapsed)
+                return;
+            String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
+            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+            if (fragment != null && fragment instanceof MainNowFragment) {
+                ((MainNowFragment) fragment).scrollToTop();
+                mAppBar.setExpanded(true, true);
             }
         });
     }
 
     private void setAvatar() {
         String path = this.getFilesDir() + "/avatar.png";
-        File file = new File(path);
-        if (file.exists()) {
+        if (FileUtils.isFileExists(path)) {
             Bitmap avatarBitmap = BitmapFactory.decodeFile(path);
             mAvatar.setImageBitmap(avatarBitmap);
         }
@@ -134,22 +120,19 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     private void showAvatarAlert() {
         new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源").setItems(new String[]{"拍照", "图库"},
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case 0://拍照
-                                //打开系统拍照程序，选择拍照图片
-                                Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                startActivityForResult(camera, REQUEST_CAMERA);
-                                break;
-                            case 1://图库
-                                //打开系统图库程序，选择图片
-                                Intent picture = new Intent(Intent.ACTION_PICK,
-                                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                                startActivityForResult(picture, REQUEST_ALBUM);
-                                break;
-                        }
+                (dialog, which) -> {
+                    switch (which) {
+                        case 0://拍照
+                            //打开系统拍照程序，选择拍照图片
+                            Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(camera, REQUEST_CAMERA);
+                            break;
+                        case 1://图库
+                            //打开系统图库程序，选择图片
+                            Intent picture = new Intent(Intent.ACTION_PICK,
+                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                            startActivityForResult(picture, REQUEST_ALBUM);
+                            break;
                     }
                 }).create()
                 .show();
@@ -164,20 +147,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
                 .setNegativeColor(R.color.colorAccent)
                 .setNegativeButtonText("取消")
-                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        dialog.dismiss();
-                    }
-                })
+                .setOnNegativeClicked((view, dialog) -> dialog.dismiss())
                 .setPositiveButtonText("确定")
                 .setPositiveColor(R.color.colorPrimary)
-                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show();
-                    }
-                })
+                .setOnPositiveClicked((view, dialog)
+                        -> Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show())
                 .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
                 .setAutoHide(false)
                 .build();
@@ -290,6 +264,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onPause() {
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
+
     }
 
     @Override

@@ -136,37 +136,34 @@ public class OnlineMusicActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setNestedScrollingEnabled(false);
-        musicViewProvider.setOnMusicClick(new OnlineMusicViewProvider.OnMusicClick() {
-            @Override
-            public void onItemMusicClick(OnlineMusic onlineMusic) {
-                Log.i("LM - onItemMusicClick:",onlineMusic.toString());
-                App.getAppComponent().getOnlineMusicService().getMusic(onlineMusic.getSong_id())
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Subscriber<Music>() {
-                            @Override
-                            public void onSubscribe(Subscription s) {
-                                s.request(Long.MAX_VALUE);
-                            }
+        musicViewProvider.setOnMusicClick(onlineMusic -> {
+            Log.i("LM - onItemMusicClick:",onlineMusic.toString());
+            App.getAppComponent().getOnlineMusicService().getMusic(onlineMusic.getSong_id())
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<Music>() {
+                        @Override
+                        public void onSubscribe(Subscription s) {
+                            s.request(Long.MAX_VALUE);
+                        }
 
-                            @Override
-                            public void onNext(Music music) {
-                                Log.i("LM - onNext:",music.toString());
-                                startService(new Intent(OnlineMusicActivity.this, PlayMusicService.class).putExtra("music",music));
-                                mToolbar.setTitle(music.getSonginfo().getTitle());
-                            }
+                        @Override
+                        public void onNext(Music music) {
+                            Log.i("LM - onNext:",music.toString());
+                            startService(new Intent(OnlineMusicActivity.this, PlayMusicService.class).putExtra("music",music));
+                            mToolbar.setTitle(music.getSonginfo().getTitle());
+                        }
 
-                            @Override
-                            public void onError(Throwable t) {
+                        @Override
+                        public void onError(Throwable t) {
 
-                            }
+                        }
 
-                            @Override
-                            public void onComplete() {
+                        @Override
+                        public void onComplete() {
 
-                            }
-                        });
-            }
+                        }
+                    });
         });
     }
 
