@@ -79,36 +79,36 @@ public class MovieActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<Word>() {
-            @Override
-            public void onSubscribe(Disposable d) {
-                mDisposable = d;
-            }
-
-            @Override
-            public void onNext(Word word) {
-                if (null != word) {
-                    int errorCode = word.getErrorCode();
-                    if (errorCode == 20) {
-                        ToastUtils.showShortSafe("要翻译的文本过长");
-                    } else if (errorCode == 40) {
-                        ToastUtils.showShortSafe("不支持该语言");
-                    } else if (errorCode == 0) {
-                        mTranslateResult.setText("");
-                        mTranslateResult.setText(word.getTranslation().get(0));
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable = d;
                     }
-                }
-            }
 
-            @Override
-            public void onError(Throwable e) {
+                    @Override
+                    public void onNext(Word word) {
+                        if (null != word) {
+                            int errorCode = word.getErrorCode();
+                            if (errorCode == 20) {
+                                ToastUtils.showShortSafe("要翻译的文本过长");
+                            } else if (errorCode == 40) {
+                                ToastUtils.showShortSafe("不支持该语言");
+                            } else if (errorCode == 0) {
+                                mTranslateResult.setText("");
+                                mTranslateResult.setText(word.getTranslation().get(0));
+                            }
+                        }
+                    }
 
-            }
+                    @Override
+                    public void onError(Throwable e) {
 
-            @Override
-            public void onComplete() {
+                    }
 
-            }
-        });
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
     }
 
