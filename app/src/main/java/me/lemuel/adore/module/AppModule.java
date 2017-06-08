@@ -25,7 +25,7 @@ public class AppModule {
     }
 
     @Provides
-    public OnlineMusicService provideOnlineMusicService(){
+    public OnlineMusicService provideOnlineMusicService() {
         return ApiManager.getOnlineMusicRetrofit().create(OnlineMusicService.class);
     }
 }

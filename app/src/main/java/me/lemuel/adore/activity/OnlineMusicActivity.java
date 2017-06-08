@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -44,8 +43,9 @@ import me.lemuel.adore.fragment.DialogView;
 import me.lemuel.adore.provider.BillboardViewProvider;
 import me.lemuel.adore.provider.OnlineMusicViewProvider;
 import me.lemuel.adore.service.PlayMusicService;
+import solid.ren.skinlibrary.base.SkinBaseActivity;
 
-public class OnlineMusicActivity extends AppCompatActivity {
+public class OnlineMusicActivity extends SkinBaseActivity {
 
     private static final int MUSIC_LIST_SIZE = 20;
     @BindView(R.id.lv_online_music_list)

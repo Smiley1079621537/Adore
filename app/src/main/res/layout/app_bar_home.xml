@@ -3,6 +3,7 @@
     android:id="@+id/sliding_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:skin="http://schemas.android.com/android/skin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
@@ -23,6 +24,7 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
@@ -31,17 +33,19 @@
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                skin:enable="true"/>
 
             <android.support.design.widget.TabLayout
                 android:id="@+id/tab_layout"
-                android:layout_gravity="center"
-                app:tabMode="fixed"
-                app:tabIndicatorHeight="3dp"
-                app:tabIndicatorColor="@color/tabIndicatorColor"
-                app:tabTextColor="@color/colorPrimaryDark"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:tabIndicatorColor="@color/tabIndicatorColor"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="fixed"
+                app:tabTextColor="@color/colorPrimaryDark"
+                skin:enable="true"/>
 
         </android.support.design.widget.AppBarLayout>
 
@@ -53,19 +57,19 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
-            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:visibility="gone"
             app:srcCompat="@drawable/ic_vertical_align_top_black_24dp"/>
 
     </android.support.design.widget.CoordinatorLayout>
 
     <TextView
-        android:background="@color/colorPrimary"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
         android:gravity="center|top"
         android:textSize="16sp"/>
 

@@ -6,7 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
-    <string name="has_released">热映</string>
+    <string name="has_released">正在热映</string>
     <string name="online_music">在线音乐</string>
     <string name="wx_share">微信分享</string>
     <string name="item_pic">item_pic</string>

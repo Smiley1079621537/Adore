@@ -2,7 +2,6 @@ package me.lemuel.adore;
 
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 
 import com.blankj.utilcode.util.Utils;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -11,16 +10,22 @@ import com.umeng.socialize.Config;
 import com.umeng.socialize.PlatformConfig;
 import com.umeng.socialize.UMShareAPI;
 
+import attr.BackgroundAttr;
+import attr.CollapsingToolbarLayoutAttr;
+import attr.FabButtonAttr;
+import attr.NavigationViewAttr;
+import attr.TabLayoutAttr;
+import attr.TabLayoutIndicatorAttr;
 import butterknife.ButterKnife;
-import io.realm.Realm;
-import io.realm.RealmConfiguration;
 import me.lemuel.adore.api.ApiManager;
 import me.lemuel.adore.component.AppComponent;
 import me.lemuel.adore.component.DaggerAppComponent;
 import me.lemuel.adore.module.AppModule;
+import solid.ren.skinlibrary.SkinConfig;
+import solid.ren.skinlibrary.base.SkinBaseApplication;
 import zlc.season.rxdownload2.RxDownload;
 
-public class App extends Application {
+public class App extends SkinBaseApplication {
 
     private static AppComponent mAppComponent;
     @SuppressLint("StaticFieldLeak")
@@ -28,11 +33,9 @@ public class App extends Application {
     private static App appContext;
 
     static {
-        PlatformConfig.setWeixin("wxb91475a5accdcf0e", "6b0e4fda3c4f7c2372753846a0d2aa06");
+        PlatformConfig.setWeixin("wxb91475a5accdcf0e", "35faf2f10421f56816904376a3aaf209");
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private static Realm moviesRealm;
 
     public static App getAppContext() {
         return appContext;
@@ -51,8 +54,23 @@ public class App extends Application {
         UMShareAPI.get(this);
         Config.DEBUG = true;
         // initCalligraphy();
-        Realm.init(this);
         Utils.init(this);
+        SkinConfig.setCanChangeStatusColor(true);
+        SkinConfig.setCanChangeFont(true);
+        SkinConfig.setDebug(false);
+        /**
+         * 换肤默认只支持 android 的常用控件，对于支持库的控件和自定义控件的换肤需要动态添加（
+         * 例如：
+         * dynamicAddSkinEnableView(toolbar, "background", R.color.colorPrimaryDark);），
+         * 在布局文件中使用skin:enable="true"是无效的。
+         */
+        SkinConfig.addSupportAttr("tabLayoutIndicator", new TabLayoutIndicatorAttr());
+        SkinConfig.addSupportAttr("background",new BackgroundAttr());
+        SkinConfig.addSupportAttr("navigationView",new NavigationViewAttr());
+        SkinConfig.addSupportAttr("tabLayout",new TabLayoutAttr());
+        SkinConfig.addSupportAttr("collapsingToolbarLayout",new CollapsingToolbarLayoutAttr());
+        SkinConfig.addSupportAttr("fabButton",new FabButtonAttr());
+        SkinConfig.enableGlobalSkinApply();
     }
 
     //字体配置
@@ -62,19 +80,6 @@ public class App extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build());
     }*/
-
-    //电影数据
-    public static Realm getMoviesRealm() {
-        if (moviesRealm == null) {
-            RealmConfiguration moviesConfig = new RealmConfiguration.Builder()
-                    .name("movies.realm")
-                    .schemaVersion(1)
-                    .build();
-            moviesRealm = Realm.getInstance(moviesConfig);
-        }
-        return moviesRealm;
-    }
-
 
     public static AppComponent getAppComponent() {
         if (mAppComponent == null) {

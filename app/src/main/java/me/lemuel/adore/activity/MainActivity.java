@@ -3,7 +3,6 @@ package me.lemuel.adore.activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,9 +15,10 @@ import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.BibleAdapter;
 import me.lemuel.adore.bean.bible.Bible;
+import solid.ren.skinlibrary.base.SkinBaseActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends SkinBaseActivity implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.bible_viewpager)
     ViewPager mBibleViewpager;

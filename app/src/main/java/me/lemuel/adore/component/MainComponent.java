@@ -10,5 +10,6 @@ import me.lemuel.adore.module.MainModule;
 
 @Component(modules = {MainModule.class})
 public interface MainComponent {
+
     void inject(MainNowFragment mainFragment);
 }

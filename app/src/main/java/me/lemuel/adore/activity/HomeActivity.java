@@ -1,5 +1,6 @@
 package me.lemuel.adore.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -18,7 +19,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,8 +39,11 @@ import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.fragment.MainNowFragment;
 import me.lemuel.adore.fragment.OnlineMusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
+import solid.ren.skinlibrary.SkinLoaderListener;
+import solid.ren.skinlibrary.base.SkinBaseActivity;
+import solid.ren.skinlibrary.loader.SkinManager;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends SkinBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_CAMERA = 0x01;
     private static final int REQUEST_ALBUM = 0X02;
@@ -108,6 +111,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 mAppBar.setExpanded(true, true);
             }
         });
+        dynamicAddView(mNavView, "background", R.color.colorPrimary);
+        dynamicAddView(toolbar, "background", R.color.colorPrimary);
+        dynamicAddView(tabLayout, "tabLayout", R.color.colorPrimary);
+        dynamicAddView(mAppBar, "background", R.color.colorPrimary);
     }
 
     private void setAvatar() {
@@ -214,17 +221,40 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
+    @SuppressLint("RestrictedApi")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_camera:
-                //wxShare();
+                wxShare();
                 break;
             case R.id.nav_manage:
+                SkinManager.getInstance().loadFont("SSXHZT.ttf");
+                SkinManager.getInstance().loadSkin("adore.skin", new SkinLoaderListener() {
+                    @Override
+                    public void onStart() {
 
+                    }
+
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(HomeActivity.this, "切换成功", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onFailed(String errMsg) {
+                        Toast.makeText(HomeActivity.this, "切换失败" + errMsg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onProgress(int progress) {
+
+                    }
+                });
                 break;
             case R.id.nav_gallery:
-                Toast.makeText(this, "gallery", Toast.LENGTH_SHORT).show();
+                SkinManager.getInstance().loadFont("WRYHZT.ttf");
+                SkinManager.getInstance().restoreDefaultTheme();
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -255,7 +285,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         };
         new ShareAction(HomeActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                .withText("微信分享测试！test!")
+                .withText("Immanuel分享测试！")
                 .setCallback(umShareListener)
                 .share();
     }

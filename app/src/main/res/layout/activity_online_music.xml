@@ -29,8 +29,8 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin"
                 android:title="@string/immanuel"
+                app:layout_collapseMode="pin"
                 app:popupTheme="@style/AppTheme.PopupOverlay"/>
 
         </android.support.design.widget.CollapsingToolbarLayout>
@@ -48,11 +48,11 @@
             android:layout_height="match_parent">
 
             <android.support.v7.widget.RecyclerView
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
                 android:id="@+id/lv_online_music_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_marginBottom="15dp"
+                android:layout_marginTop="15dp"/>
 
         </RelativeLayout>
 

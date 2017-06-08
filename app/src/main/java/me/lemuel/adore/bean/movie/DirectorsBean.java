@@ -1,13 +1,11 @@
 package me.lemuel.adore.bean.movie;
 
-import io.realm.RealmObject;
-
 /**
  * Created by lemuel on 2017/3/1.
  */
 
 
-public class DirectorsBean extends RealmObject {
+public class DirectorsBean{
 
     private String alt;
     private AvatarsBean avatars;

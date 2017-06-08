@@ -24,12 +24,13 @@ import me.lemuel.adore.listener.OnLoadMoreListener;
 import me.lemuel.adore.module.MainModule;
 import me.lemuel.adore.presenter.MainPresenter;
 import me.lemuel.adore.provider.SubjectProvider;
+import solid.ren.skinlibrary.base.SkinBaseFragment;
 
 /**
  * Created by lemuel on 2017/3/7.
  */
 
-public class MainNowFragment extends Fragment
+public class MainNowFragment extends SkinBaseFragment
         implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;

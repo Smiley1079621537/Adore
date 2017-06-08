@@ -13,8 +13,6 @@ import javax.inject.Inject;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
-import io.realm.RealmResults;
 import me.drakeet.multitype.Items;
 import me.lemuel.adore.App;
 import me.lemuel.adore.bean.movie.Movie;
@@ -73,28 +71,16 @@ public class MainPresenter implements MainContract.Presenter {
     private void dealMovie(Movie movie) {
         mainView.hideLoding();
         items.clear();
-        Realm realm = App.getMoviesRealm();
-        realm.beginTransaction();
-        Log.d("Immanuel",movie.getSubjects().toString());
         List<SubjectsBean> subjects = movie.getSubjects();
         for (SubjectsBean subject : subjects) {
             subject.setHeight((int) (250 + Math.random() * 200));//瀑布流高度
             items.add(subject);
-            realm.copyToRealm(subject);
         }
-        realm.commitTransaction();
         mainView.loadData(items);
     }
 
     public void loadMore() {
         mainView.showLoading();
-        RealmResults<SubjectsBean> all = App.getMoviesRealm().where(SubjectsBean.class).findAll();
-        if (all != null && all.size() > 0) {
-            for (SubjectsBean subject : all) {
-                items.add(subject);
-            }
-            mainView.loadData(items);
-        }
         mainView.hideLoding();
     }
 }

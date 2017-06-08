@@ -1,19 +1,18 @@
 package me.lemuel.adore.bean.movie;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.ArrayList;
 
 /**
  * Created by lemuel on 2017/2/24.
  */
 
 
-public class Movie extends RealmObject {
+public class Movie{
     private int count;
     private int start;
     private int total;
     private String title;
-    private RealmList<SubjectsBean> subjects;
+    private ArrayList<SubjectsBean> subjects;
 
     public int getCount() {
         return count;
@@ -47,11 +46,11 @@ public class Movie extends RealmObject {
         this.title = title;
     }
 
-    public RealmList<SubjectsBean> getSubjects() {
+    public ArrayList<SubjectsBean> getSubjects() {
         return subjects;
     }
 
-    public void setSubjects(RealmList<SubjectsBean> subjects) {
+    public void setSubjects(ArrayList<SubjectsBean> subjects) {
         this.subjects = subjects;
     }
 }

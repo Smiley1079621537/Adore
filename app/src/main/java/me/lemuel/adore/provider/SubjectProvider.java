@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import fm.jiecao.jcvideoplayer_lib.JCVideoPlayerStandard;
 import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
 import me.lemuel.adore.activity.MovieActivity;
@@ -67,7 +66,7 @@ public class SubjectProvider
         private TextView year;
         private SimpleDraweeView pic;
         private TextView director;
-        private JCVideoPlayerStandard jcVideoPlayerStandard;
+        //private JCVideoPlayerStandard jcVideoPlayerStandard;
 
         ViewHolder(View itemView) {
             super(itemView);
@@ -75,7 +74,7 @@ public class SubjectProvider
             year = (TextView) itemView.findViewById(R.id.year);
             pic = (SimpleDraweeView) itemView.findViewById(R.id.movie_pic);
             director = (TextView) itemView.findViewById(R.id.director);
-            jcVideoPlayerStandard = (JCVideoPlayerStandard) itemView.findViewById(R.id.videoplayer);
+            //jcVideoPlayerStandard = (JCVideoPlayerStandard) itemView.findViewById(R.id.videoplayer);
         }
     }
 }

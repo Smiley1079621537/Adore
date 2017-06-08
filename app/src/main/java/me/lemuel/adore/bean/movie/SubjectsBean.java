@@ -1,14 +1,13 @@
 package me.lemuel.adore.bean.movie;
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
+import java.util.ArrayList;
 
 /**
  * Created by lemuel on 2017/3/1.
  */
 
 
-public class SubjectsBean extends RealmObject {
+public class SubjectsBean{
     private RatingBean rating;
     private String title;
     private int collect_count;
@@ -17,8 +16,8 @@ public class SubjectsBean extends RealmObject {
     private String year;
     private ImagesBean images;
     private String alt;
-    private RealmList<CastsBean> casts;
-    private RealmList<DirectorsBean> directors;
+    private ArrayList<CastsBean> casts;
+    private ArrayList<DirectorsBean> directors;
     private int height;
 
     public RatingBean getRating() {
@@ -85,19 +84,19 @@ public class SubjectsBean extends RealmObject {
         this.alt = alt;
     }
 
-    public RealmList<CastsBean> getCasts() {
+    public ArrayList<CastsBean> getCasts() {
         return casts;
     }
 
-    public void setCasts(RealmList<CastsBean> casts) {
+    public void setCasts(ArrayList<CastsBean> casts) {
         this.casts = casts;
     }
 
-    public RealmList<DirectorsBean> getDirectors() {
+    public ArrayList<DirectorsBean> getDirectors() {
         return directors;
     }
 
-    public void setDirectors(RealmList<DirectorsBean> directors) {
+    public void setDirectors(ArrayList<DirectorsBean> directors) {
         this.directors = directors;
     }
 

@@ -1,11 +1,12 @@
 package me.lemuel.adore.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -27,8 +28,9 @@ import me.lemuel.adore.R;
 import me.lemuel.adore.bean.translate.Word;
 import me.lemuel.adore.fragment.DialogView;
 import me.lemuel.adore.util.CommentUtil;
+import solid.ren.skinlibrary.base.SkinBaseActivity;
 
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends SkinBaseActivity {
 
     @BindView(R.id.movie_img)
     SimpleDraweeView mMovieImg;
@@ -42,8 +44,11 @@ public class MovieActivity extends AppCompatActivity {
     TextView mTranslateResult;
     @BindView(R.id.fab)
     FloatingActionButton mFab;
+    @BindView(R.id.app_bar)
+    AppBarLayout mBarLayout;
     private Disposable mDisposable;
 
+    @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {

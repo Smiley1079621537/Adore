@@ -12,6 +12,7 @@ import me.lemuel.adore.module.AppModule;
 
 @Component(modules = {AppModule.class})
 public interface AppComponent {
+
     DBSerivce getDoubanService();
     TranslateService getTranslateService();
     OnlineMusicService getOnlineMusicService();

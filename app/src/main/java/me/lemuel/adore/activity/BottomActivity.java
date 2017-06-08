@@ -1,9 +1,9 @@
 package me.lemuel.adore.activity;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -11,9 +11,15 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import me.lemuel.adore.DaoMaster;
+import me.lemuel.adore.DaoSession;
+import me.lemuel.adore.NoteDao;
 import me.lemuel.adore.R;
+import solid.ren.skinlibrary.base.SkinBaseActivity;
 
-public class BottomActivity extends AppCompatActivity {
+public class BottomActivity extends SkinBaseActivity {
+
+    private static final String DAO_TABLE_NAME = "dao";
 
     @BindView(R.id.message)
     TextView mTextMessage;
@@ -51,5 +57,9 @@ public class BottomActivity extends AppCompatActivity {
         setContentView(R.layout.activity_bottom);
         ButterKnife.bind(this);
         mNavigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        SQLiteDatabase database = new DaoMaster.DevOpenHelper(this, DAO_TABLE_NAME, null).getWritableDatabase();
+        DaoSession daoSession = new DaoMaster(database).newSession();
+        NoteDao noteDao = daoSession.getNoteDao();
+
     }
 }
