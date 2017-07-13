@@ -17,7 +17,6 @@ public class Section {
         this.bookId = bookId;
     }
 
-
     public String getContent() {
         return this.content;
     }

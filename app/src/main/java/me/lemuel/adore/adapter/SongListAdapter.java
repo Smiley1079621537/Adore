@@ -3,7 +3,6 @@ package me.lemuel.adore.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +10,14 @@ import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
-
 import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import me.lemuel.adore.App;
+import me.lemuel.adore.AdoreSubscriver;
 import me.lemuel.adore.R;
-import me.lemuel.adore.activity.OnlineMusicActivity;
+import me.lemuel.adore.activity.MusicActivity;
+import me.lemuel.adore.api.ApiManager;
 import me.lemuel.adore.base.Extras;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
@@ -59,22 +56,23 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return holder;
     }
 
-
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderProfile) {
             ((ViewHolderProfile) holder).tvProfile.setText(mData.get(position).getTitle());
         } else if (holder instanceof ViewHolderMusicList) {
             getMusicListInfo(mData.get(position), (ViewHolderMusicList) holder);
-            holder.itemView.setOnClickListener(v -> {
-                SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
-                Intent intent = new Intent(mContext, OnlineMusicActivity.class);
-                intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
-                mContext.startActivity(intent);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
+                    Intent intent = new Intent(mContext, MusicActivity.class);
+                    intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
+                    mContext.startActivity(intent);
+                }
             });
         }
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -100,30 +98,15 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void getOnlineMusic(final SongListInfo songListInfoInfo, final ViewHolderMusicList holderMusicList) {
-        App.getAppComponent().getOnlineMusicService().getSongList(songListInfoInfo.getType(), "3", "0")
+        ApiManager.getMusicService().getSongList(songListInfoInfo.getType(), "3", "0")
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<OnlineMusicList>() {
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        s.request(Long.MAX_VALUE);
-                    }
-
+                .subscribe(new AdoreSubscriver<OnlineMusicList>() {
                     @Override
                     public void onNext(OnlineMusicList onlineMusicList) {
                         songListInfoInfo.setCoverUrl(onlineMusicList.getBillboard().getPic_s640());
                         updateSongListInfo(onlineMusicList, songListInfoInfo);
                         setData(songListInfoInfo, holderMusicList);
-                    }
-
-                    @Override
-                    public void onError(Throwable t) {
-                        Log.d("imm", t.toString());
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
     }
@@ -156,7 +139,6 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private static class ViewHolderProfile extends RecyclerView.ViewHolder {
         TextView tvProfile;
-
         public ViewHolderProfile(View itemView) {
             super(itemView);
             tvProfile = (TextView) itemView.findViewById(R.id.tv_profile);

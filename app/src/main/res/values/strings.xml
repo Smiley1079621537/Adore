@@ -108,4 +108,5 @@
     </string>
     <string name="imageTransition">movieImage</string>
     <string name="immanuel">Immanuel</string>
+    <string name="returned_from_app_settings_to_activity">返回</string>
 </resources>

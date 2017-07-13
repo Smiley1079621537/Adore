@@ -19,12 +19,11 @@ import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.SongListAdapter;
 import me.lemuel.adore.bean.music.SongListInfo;
-import solid.ren.skinlibrary.base.SkinBaseFragment;
 
 /**
  * Created by lemuel on 2017/05/08.
  */
-public class OnlineMusicFragment extends SkinBaseFragment {
+public class MusicFragment extends Fragment{
 
     @BindView(R.id.lv_song_list)
     RecyclerView mLvSongList;
@@ -38,7 +37,6 @@ public class OnlineMusicFragment extends SkinBaseFragment {
         ButterKnife.bind(this, view);
         return view;
     }
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -63,6 +61,6 @@ public class OnlineMusicFragment extends SkinBaseFragment {
     }
 
     public static Fragment newInstance() {
-        return new OnlineMusicFragment();
+        return new MusicFragment();
     }
 }

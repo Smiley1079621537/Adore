@@ -20,8 +20,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginStart="10dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/default_cover"/>
+        android:scaleType="fitXY"/>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -69,8 +68,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginRight="10dp"
                 android:contentDescription="@null"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_music_list_icon_more"/>
+                android:scaleType="centerInside"/>
 
         </LinearLayout>
     </FrameLayout>

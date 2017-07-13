@@ -24,19 +24,15 @@ public class Book {
         this.loadBookFromFile(context);
     }
 
-
     private void loadBookFromFile(Context context) {
         String fileName = id > 9 ? "" + id : "0" + id;
         try {
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(context.getAssets().open(fileName), "utf-8"));
-
             bufferedReader.readLine();
             bufferedReader.readLine();
-
             int chapter_id = 1;
             int section_id = 0;
             Chapter chapter = new Chapter(chapter_id, this.id);
-
             while (true) {
                 String temp;
                 temp = bufferedReader.readLine();

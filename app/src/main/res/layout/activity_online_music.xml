@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_bar_height"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@color/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <include layout="@layout/layout_list_header"/>
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        tools:context="me.lemuel.adore.activity.OnlineMusicActivity"
+        tools:context="me.lemuel.adore.activity.MusicActivity"
         tools:showIn="@layout/activity_online_music">
 
         <RelativeLayout

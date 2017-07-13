@@ -2,6 +2,7 @@ package me.lemuel.adore.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,13 +18,8 @@ import me.lemuel.adore.bean.bible.Bible;
 import me.lemuel.adore.bean.bible.Book;
 import me.lemuel.adore.bean.bible.Section;
 import me.lemuel.adore.provider.SectionViewProvider;
-import solid.ren.skinlibrary.base.SkinBaseFragment;
 
-/**
- * author : lemuel
- * time   : 2017/03/23
- */
-public class BibleFragment extends SkinBaseFragment {
+public class BibleFragment extends Fragment {
 
     private MultiTypeAdapter sectionAdapter;
     private static int bookid = 1;

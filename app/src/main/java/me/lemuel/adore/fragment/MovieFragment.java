@@ -10,34 +10,27 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
-import javax.inject.Inject;
 
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.R;
 import me.lemuel.adore.bean.movie.SubjectsBean;
-import me.lemuel.adore.component.DaggerMainComponent;
-import me.lemuel.adore.contract.MainContract;
+import me.lemuel.adore.contract.MovieContract;
 import me.lemuel.adore.listener.OnLoadMoreListener;
-import me.lemuel.adore.module.MainModule;
-import me.lemuel.adore.presenter.MainPresenter;
+import me.lemuel.adore.presenter.MoviePresenter;
 import me.lemuel.adore.provider.SubjectProvider;
-import solid.ren.skinlibrary.base.SkinBaseFragment;
 
 /**
  * Created by lemuel on 2017/3/7.
  */
 
-public class MainNowFragment extends SkinBaseFragment
-        implements MainContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class MovieFragment extends Fragment
+        implements MovieContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
     private MultiTypeAdapter listAdapter;
-    @Inject
-    MainPresenter mainPresenter;
+    private MoviePresenter moviePresenter;
 
     @Nullable
     @Override
@@ -60,25 +53,18 @@ public class MainNowFragment extends SkinBaseFragment
         listAdapter = new MultiTypeAdapter();
         listAdapter.register(SubjectsBean.class, new SubjectProvider(getActivity()));
         recyclerView.setAdapter(listAdapter);
-        DaggerMainComponent.builder().mainModule(new MainModule(this)).build().inject(this);
-        mainPresenter.onCreate();
+        moviePresenter = new MoviePresenter(this);
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {
-                mainPresenter.loadMore();
+                moviePresenter.loadMore();
             }
         });
     }
 
-
     @Override
     public void onRefresh() {
         refreshLayout.setRefreshing(false);
-    }
-
-    @Override
-    public void showToast(String msg) {
-        Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -97,13 +83,8 @@ public class MainNowFragment extends SkinBaseFragment
         listAdapter.notifyDataSetChanged();
     }
 
-    @Override
-    public void setPresenter(MainPresenter presenter) {
-        mainPresenter = presenter;
-    }
-
     public static Fragment newInstance() {
-        return new MainNowFragment();
+        return new MovieFragment();
     }
 
     public void scrollToTop() {

@@ -2,6 +2,8 @@ package me.lemuel.adore.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,16 +21,17 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileUtils;
 import com.geniusforapp.fancydialog.FancyAlertDialog;
 import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.UMShareListener;
 import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import butterknife.BindView;
@@ -36,17 +39,17 @@ import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.TabPagerAdapter;
-import me.lemuel.adore.fragment.MainNowFragment;
-import me.lemuel.adore.fragment.OnlineMusicFragment;
+import me.lemuel.adore.fragment.MovieFragment;
+import me.lemuel.adore.fragment.MusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
-import solid.ren.skinlibrary.SkinLoaderListener;
-import solid.ren.skinlibrary.base.SkinBaseActivity;
-import solid.ren.skinlibrary.loader.SkinManager;
 
-public class HomeActivity extends SkinBaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_CAMERA = 0x01;
     private static final int REQUEST_ALBUM = 0X02;
+    private boolean isCollapsed = false;//是否被折叠
+    private ImageView mAvatar;
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -63,58 +66,65 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
     @BindView(R.id.nav_view)
     NavigationView mNavView;
 
-    private boolean isCollapsed = false;//是否被折叠
-    private static final String TAG = "lemuel";
-    private ImageView mAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        initView();
+        initEvent();
+    }
+
+    private void initEvent() {
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isCollapsed)
+                    return;
+                String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
+                if (fragment != null && fragment instanceof MovieFragment) {
+                    ((MovieFragment) fragment).scrollToTop();
+                    mAppBar.setExpanded(true, true);
+                }
+            }
+        });
+        mAppBar.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                isCollapsed = verticalOffset < 0; // 监听AppBar是否被折叠
+            }
+        });
+        mAvatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawer.closeDrawers();
+                showAvatarAlert();
+            }
+        });
+    }
+
+    private void initView() {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         mNavView.setNavigationItemSelectedListener(this);
         mAvatar = (ImageView) mNavView.getHeaderView(0).findViewById(R.id.avatar);
-        mAvatar.setOnClickListener(v -> {
-            drawer.closeDrawers();
-            showAvatarAlert();
-        });
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
-
-        setAvatar();
-
-        final Fragment[] fragments = new Fragment[2];
-        fragments[0] = MainNowFragment.newInstance();
-
-        fragments[1] = OnlineMusicFragment.newInstance();
+        Fragment[] fragments = new Fragment[2];
+        fragments[0] = MovieFragment.newInstance();
+        fragments[1] = MusicFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
-        tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released), getString(R.string.online_music)});
-
+        tabPagerAdapter.setTabTitles(new String[]{
+                getString(R.string.has_released),
+                getString(R.string.online_music)
+        });
         viewPager.setAdapter(tabPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
-        mAppBar.addOnOffsetChangedListener((appBarLayout, verticalOffset) -> {
-            isCollapsed = verticalOffset < 0; // 监听AppBar是否被折叠
-        });
-        fb.setOnClickListener(v -> {
-            if (!isCollapsed)
-                return;
-            String tag = "android:switcher:" + viewPager.getId() + ":" + viewPager.getCurrentItem();
-            Fragment fragment = getSupportFragmentManager().findFragmentByTag(tag);
-            if (fragment != null && fragment instanceof MainNowFragment) {
-                ((MainNowFragment) fragment).scrollToTop();
-                mAppBar.setExpanded(true, true);
-            }
-        });
-        dynamicAddView(mNavView, "background", R.color.colorPrimary);
-        dynamicAddView(toolbar, "background", R.color.colorPrimary);
-        dynamicAddView(tabLayout, "tabLayout", R.color.colorPrimary);
-        dynamicAddView(mAppBar, "background", R.color.colorPrimary);
+        setAvatar();
     }
 
     private void setAvatar() {
@@ -126,24 +136,22 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
     }
 
     private void showAvatarAlert() {
-        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源").setItems(new String[]{"拍照", "图库"},
-                (dialog, which) -> {
-                    switch (which) {
-                        case 0://拍照
-                            //打开系统拍照程序，选择拍照图片
-                            Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                            startActivityForResult(camera, REQUEST_CAMERA);
-                            break;
-                        case 1://图库
-                            //打开系统图库程序，选择图片
-                            Intent picture = new Intent(Intent.ACTION_PICK,
-                                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            startActivityForResult(picture, REQUEST_ALBUM);
-                            break;
-                    }
-                }).create()
-                .show();
-
+        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源").setItems(new String[]{"拍照", "图库"}, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                switch (which) {
+                    case 0://拍照
+                        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        startActivityForResult(camera, REQUEST_CAMERA);
+                        break;
+                    case 1://图库
+                        Intent picture = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(picture, REQUEST_ALBUM);
+                        break;
+                }
+            }
+        });
     }
 
     private void showAlert(final Activity activity) {
@@ -154,11 +162,20 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
                 .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
                 .setNegativeColor(R.color.colorAccent)
                 .setNegativeButtonText("取消")
-                .setOnNegativeClicked((view, dialog) -> dialog.dismiss())
+                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
                 .setPositiveButtonText("确定")
                 .setPositiveColor(R.color.colorPrimary)
-                .setOnPositiveClicked((view, dialog)
-                        -> Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show())
+                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
                 .setAutoHide(false)
                 .build();
@@ -229,32 +246,10 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
                 wxShare();
                 break;
             case R.id.nav_manage:
-                SkinManager.getInstance().loadFont("SSXHZT.ttf");
-                SkinManager.getInstance().loadSkin("adore.skin", new SkinLoaderListener() {
-                    @Override
-                    public void onStart() {
 
-                    }
-
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(HomeActivity.this, "切换成功", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onFailed(String errMsg) {
-                        Toast.makeText(HomeActivity.this, "切换失败" + errMsg, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onProgress(int progress) {
-
-                    }
-                });
                 break;
             case R.id.nav_gallery:
-                SkinManager.getInstance().loadFont("WRYHZT.ttf");
-                SkinManager.getInstance().restoreDefaultTheme();
+
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);
@@ -263,30 +258,8 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
 
     //微信分享
     private void wxShare() {
-        UMShareListener umShareListener = new UMShareListener() {
-            @Override
-            public void onStart(SHARE_MEDIA share_media) {
-
-            }
-
-            @Override
-            public void onResult(SHARE_MEDIA share_media) {
-                Toast.makeText(HomeActivity.this, "分享成功！", Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onError(SHARE_MEDIA share_media, Throwable throwable) {
-                Toast.makeText(HomeActivity.this, throwable.toString(), Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onCancel(SHARE_MEDIA share_media) {
-
-            }
-        };
         new ShareAction(HomeActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
                 .withText("Immanuel分享测试！")
-                .setCallback(umShareListener)
                 .share();
     }
 
@@ -294,12 +267,5 @@ public class HomeActivity extends SkinBaseActivity implements NavigationView.OnN
     protected void onPause() {
         super.onPause();
         JCVideoPlayer.releaseAllVideos();
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
     }
 }

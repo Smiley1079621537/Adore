@@ -7,7 +7,9 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,18 +21,18 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
-import me.lemuel.adore.App;
+import me.lemuel.adore.AdoreSubscriver;
 import me.lemuel.adore.R;
+import me.lemuel.adore.api.ApiManager;
 import me.lemuel.adore.bean.translate.Word;
 import me.lemuel.adore.fragment.DialogView;
 import me.lemuel.adore.util.CommentUtil;
-import solid.ren.skinlibrary.base.SkinBaseActivity;
 
-public class MovieActivity extends SkinBaseActivity {
+public class MovieActivity extends AppCompatActivity {
 
     @BindView(R.id.movie_img)
     SimpleDraweeView mMovieImg;
@@ -46,7 +48,7 @@ public class MovieActivity extends SkinBaseActivity {
     FloatingActionButton mFab;
     @BindView(R.id.app_bar)
     AppBarLayout mBarLayout;
-    private Disposable mDisposable;
+
 
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -64,11 +66,20 @@ public class MovieActivity extends SkinBaseActivity {
         collapsingToolbarLayout.setTitleEnabled(false);
         final String imgUrl = getIntent().getStringExtra("image");
         mMovieImg.setImageURI(imgUrl);
-        mFab.setOnClickListener(v -> showBottomDialog(imgUrl));
-
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showBottomDialog(imgUrl);
+            }
+        });
         RxTextView.textChanges(mSearchTranslate)
                 .debounce(500, TimeUnit.MILLISECONDS)
-                .subscribe(charSequence -> doTranslateSearch(charSequence.toString().trim()));
+                .subscribe(new Consumer<CharSequence>() {
+                    @Override
+                    public void accept(@NonNull CharSequence charSequence) throws Exception {
+                        doTranslateSearch(charSequence.toString().trim());
+                    }
+                });
     }
 
     private void showBottomDialog(String imgUrl) {
@@ -79,16 +90,11 @@ public class MovieActivity extends SkinBaseActivity {
 
     //执行单词翻译
     private void doTranslateSearch(String searchText) {
-        App.getAppComponent().getTranslateService()
+        ApiManager.getTranslateService()
                 .getResult(searchText)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<Word>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mDisposable = d;
-                    }
-
+                .subscribe(new AdoreSubscriver<Word>() {
                     @Override
                     public void onNext(Word word) {
                         if (null != word) {
@@ -102,16 +108,6 @@ public class MovieActivity extends SkinBaseActivity {
                                 mTranslateResult.setText(word.getTranslation().get(0));
                             }
                         }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
                     }
                 });
 

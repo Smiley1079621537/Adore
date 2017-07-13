@@ -1,11 +1,14 @@
 package me.lemuel.adore.activity;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.geniusforapp.fancydialog.FancyAlertDialog;
@@ -15,10 +18,9 @@ import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.BibleAdapter;
 import me.lemuel.adore.bean.bible.Bible;
-import solid.ren.skinlibrary.base.SkinBaseActivity;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
-public class MainActivity extends SkinBaseActivity implements ViewPager.OnPageChangeListener {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     @BindView(R.id.bible_viewpager)
     ViewPager mBibleViewpager;
@@ -79,13 +81,21 @@ public class MainActivity extends SkinBaseActivity implements ViewPager.OnPageCh
                 .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
                 .setNegativeColor(R.color.colorAccent)
                 .setNegativeButtonText("取消")
-                .setOnNegativeClicked((view, dialog) -> dialog.dismiss())
+                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
                 .setPositiveButtonText("确定")
                 .setPositiveColor(R.color.colorPrimary)
-                .setOnPositiveClicked((view, dialog)
-                        -> Toast.makeText(MainActivity.this, "Updating", Toast.LENGTH_SHORT).show())
+                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        Toast.makeText(MainActivity.this, "Updating", Toast.LENGTH_SHORT).show();
+                    }
+                })
                 .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
-                //.setAutoHide(true)
                 .build();
         alert.show();
     }
@@ -108,6 +118,5 @@ public class MainActivity extends SkinBaseActivity implements ViewPager.OnPageCh
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
     }
 }
