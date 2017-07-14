@@ -1,20 +1,22 @@
-package me.lemuel.adore;
+package me.lemuel.adore.mvp.music;
 
+import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.NoteDao;
 import me.lemuel.adore.bean.music.Music;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.bean.music.SongListInfo;
-import me.lemuel.adore.contract.MusicContract;
-import me.lemuel.adore.presenter.AdoreBasePresenter;
+import me.lemuel.adore.mvp.presenter.AdoreBasePresenter;
 
-public class AdorePresenter extends AdoreBasePresenter implements MusicContract.Presenter {
+public class MusicPresenter extends AdoreBasePresenter implements MusicContract.Presenter {
 
     private  MusicContract.View musicView;
 
-    public AdorePresenter(MusicContract.View view) {
+    public MusicPresenter(MusicContract.View view) {
         musicView = view;
     }
 
+    @Override
     public void requestMusic(SongListInfo listInfo,int offset){
         mDepositary.requestMusic(listInfo, offset, new AdoreCallback<OnlineMusicList>() {
             @Override
@@ -24,6 +26,7 @@ public class AdorePresenter extends AdoreBasePresenter implements MusicContract.
         });
     }
 
+    @Override
     public void doPlay(OnlineMusic music){
         mDepositary.doPlay(music, new AdoreCallback<Music>() {
             @Override
@@ -33,6 +36,7 @@ public class AdorePresenter extends AdoreBasePresenter implements MusicContract.
         });
     }
 
+    @Override
     public void getAllNote(){
         mLocalDepositary.getNote(new AdoreCallback<NoteDao>() {
             @Override

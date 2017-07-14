@@ -15,9 +15,9 @@ import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.R;
 import me.lemuel.adore.bean.movie.SubjectsBean;
-import me.lemuel.adore.contract.MovieContract;
+import me.lemuel.adore.mvp.movie.MovieContract;
 import me.lemuel.adore.listener.OnLoadMoreListener;
-import me.lemuel.adore.presenter.MoviePresenter;
+import me.lemuel.adore.mvp.movie.MoviePresenter;
 import me.lemuel.adore.provider.SubjectProvider;
 
 /**
@@ -54,6 +54,7 @@ public class MovieFragment extends Fragment
         listAdapter.register(SubjectsBean.class, new SubjectProvider(getActivity()));
         recyclerView.setAdapter(listAdapter);
         moviePresenter = new MoviePresenter(this);
+        moviePresenter.requestMovie();
         recyclerView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             public void onLoadMore() {

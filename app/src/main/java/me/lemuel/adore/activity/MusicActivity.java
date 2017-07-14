@@ -1,18 +1,13 @@
 package me.lemuel.adore.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -27,20 +22,22 @@ import butterknife.ButterKnife;
 import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
-import me.lemuel.adore.AdorePresenter;
+import me.lemuel.adore.mvp.music.MusicPresenter;
 import me.lemuel.adore.R;
+import me.lemuel.adore.base.BaseActivity;
 import me.lemuel.adore.base.Extras;
 import me.lemuel.adore.bean.music.Music;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.bean.music.SongListInfo;
-import me.lemuel.adore.contract.MusicContract;
+import me.lemuel.adore.mvp.music.MusicContract;
 import me.lemuel.adore.provider.BillboardViewProvider;
 import me.lemuel.adore.provider.OnlineMusicViewProvider;
 import me.lemuel.adore.service.PlayMusicService;
+import me.lemuel.adore.util.CommentUtil;
 
 
-public class MusicActivity extends AppCompatActivity implements MusicContract.View {
+public class MusicActivity extends BaseActivity implements MusicContract.View {
 
     @BindView(R.id.lv_online_music_list)
     RecyclerView mRecyclerView;
@@ -66,26 +63,16 @@ public class MusicActivity extends AppCompatActivity implements MusicContract.Vi
     private boolean headerAdded = false;
     private MultiTypeAdapter mAdapter;
     private OnlineMusicViewProvider mMusicViewProvider;
-    private AdorePresenter mAdorePresenter;
-
+    private MusicPresenter mMusicPresenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_online_music);
-        initView();
-        initData();
-        initEvent();
+    protected int getContentLayout() {
+        return R.layout.activity_online_music;
     }
 
-    private void initData() {
-        SongListInfo songListInfo = getIntent().getParcelableExtra(Extras.MUSIC_LIST_TYPE);
-        mAdorePresenter = new AdorePresenter(this);
-        mAdorePresenter.requestMusic(songListInfo, 0);
-    }
-
-    private void initView() {
-        setTranslucent(this);
+    @Override
+    protected void initView() {
+        CommentUtil.setTransparentStatusbar(this);
         ButterKnife.bind(this);
         mMusicViewProvider = new OnlineMusicViewProvider();
         setSupportActionBar(mToolbar);
@@ -102,11 +89,19 @@ public class MusicActivity extends AppCompatActivity implements MusicContract.Vi
         mRecyclerView.setNestedScrollingEnabled(false);
     }
 
-    private void initEvent() {
+    @Override
+    protected void initData() {
+        SongListInfo songListInfo = getIntent().getParcelableExtra(Extras.MUSIC_LIST_TYPE);
+        mMusicPresenter = new MusicPresenter(this);
+        mMusicPresenter.requestMusic(songListInfo, 0);
+    }
+
+    @Override
+    protected void initEvent() {
         mMusicViewProvider.setOnMusicClick(new OnlineMusicViewProvider.OnMusicClick() {
             @Override
             public void onItemMusicClick(OnlineMusic onlineMusic) {
-                mAdorePresenter.doPlay(onlineMusic);
+                mMusicPresenter.doPlay(onlineMusic);
             }
         });
     }
@@ -147,12 +142,5 @@ public class MusicActivity extends AppCompatActivity implements MusicContract.Vi
                 .setOldController(draweeView.getController())
                 .build();
         draweeView.setController(controller);
-    }
-
-    public void setTranslucent(Activity activity) {
-        activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        ViewGroup rootView = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-        rootView.setFitsSystemWindows(true);
-        rootView.setClipToPadding(true);
     }
 }

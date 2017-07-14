@@ -9,16 +9,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.ToastUtils;
-
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.SongListAdapter;
-import me.lemuel.adore.bean.music.SongListInfo;
 
 /**
  * Created by lemuel on 2017/05/08.
@@ -26,8 +20,7 @@ import me.lemuel.adore.bean.music.SongListInfo;
 public class MusicFragment extends Fragment{
 
     @BindView(R.id.lv_song_list)
-    RecyclerView mLvSongList;
-    private ArrayList<SongListInfo> mSongListInfos = new ArrayList<>();
+    RecyclerView mRecyclerView;
 
     @Nullable
     @Override
@@ -41,23 +34,9 @@ public class MusicFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (!NetworkUtils.isAvailableByPing()) {
-            ToastUtils.showShortSafe("网络开小差了~~");
-            return;
-        }
-        if (mSongListInfos.isEmpty()) {
-            String[] titles = getResources().getStringArray(R.array.online_music_list_title);
-            String[] types = getResources().getStringArray(R.array.online_music_list_type);
-            for (int i = 0; i < titles.length; i++) {
-                SongListInfo info = new SongListInfo();
-                info.setTitle(titles[i]);
-                info.setType(types[i]);
-                mSongListInfos.add(info);
-            }
-        }
-        mLvSongList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        SongListAdapter adapter = new SongListAdapter(mSongListInfos);
-        mLvSongList.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        SongListAdapter adapter = new SongListAdapter(getContext());
+        mRecyclerView.setAdapter(adapter);
     }
 
     public static Fragment newInstance() {

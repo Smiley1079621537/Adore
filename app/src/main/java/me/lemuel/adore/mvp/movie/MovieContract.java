@@ -1,4 +1,4 @@
-package me.lemuel.adore.contract;
+package me.lemuel.adore.mvp.movie;
 
 import me.drakeet.multitype.Items;
 import me.lemuel.adore.base.BasePresenter;
@@ -21,5 +21,8 @@ public interface MovieContract {
 
     interface Presenter extends BasePresenter {
 
+        void loadMore();
+
+        void requestMovie();
     }
 }

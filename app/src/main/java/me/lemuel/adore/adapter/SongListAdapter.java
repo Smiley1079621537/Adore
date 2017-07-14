@@ -26,23 +26,36 @@ import me.lemuel.adore.bean.music.SongListInfo;
 public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_PROFILE = 0;
     private static final int TYPE_MUSIC_LIST = 1;
-    private ArrayList<SongListInfo> mData;
     private Context mContext;
+    private ArrayList<SongListInfo> mSongListInfos = new ArrayList<>();
 
-    public SongListAdapter(ArrayList<SongListInfo> data) {
-        mData = data;
+    public SongListAdapter(Context context) {
+        mContext = context;
+        initSongListInfos();
+    }
+
+    private void initSongListInfos() {
+        if (mSongListInfos.isEmpty()) {
+            String[] titles = mContext.getResources().getStringArray(R.array.online_music_list_title);
+            String[] types = mContext.getResources().getStringArray(R.array.online_music_list_type);
+            for (int i = 0; i < titles.length; i++) {
+                SongListInfo info = new SongListInfo();
+                info.setTitle(titles[i]);
+                info.setType(types[i]);
+                mSongListInfos.add(info);
+            }
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mSongListInfos.size();
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         RecyclerView.ViewHolder holder = null;
-        mContext = parent.getContext();
         switch (viewType) {
             case TYPE_PROFILE:
                 view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_lable, parent, false);
@@ -59,13 +72,13 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ViewHolderProfile) {
-            ((ViewHolderProfile) holder).tvProfile.setText(mData.get(position).getTitle());
+            ((ViewHolderProfile) holder).tvProfile.setText(mSongListInfos.get(position).getTitle());
         } else if (holder instanceof ViewHolderMusicList) {
-            getMusicListInfo(mData.get(position), (ViewHolderMusicList) holder);
+            getMusicListInfo(mSongListInfos.get(position), (ViewHolderMusicList) holder);
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SongListInfo songListInfo = mData.get(holder.getAdapterPosition());
+                    SongListInfo songListInfo = mSongListInfos.get(holder.getAdapterPosition());
                     Intent intent = new Intent(mContext, MusicActivity.class);
                     intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
                     mContext.startActivity(intent);
@@ -76,7 +89,7 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemViewType(int position) {
-        if (mData.get(position).getType().equals("#")) {
+        if (mSongListInfos.get(position).getType().equals("#")) {
             return TYPE_PROFILE;
         } else {
             return TYPE_MUSIC_LIST;

@@ -16,17 +16,23 @@ import com.facebook.imagepipeline.request.Postprocessor;
 
 import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.lemuel.adore.bean.music.OnlineMusicList;
-import me.lemuel.adore.fragment.DialogView;
+import me.lemuel.adore.view.DialogView;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(setLayoutResId());
+        setContentView(getContentLayout());
+        initView();
+        initData();
+        initEvent();
     }
 
-    protected abstract int setLayoutResId();
+    protected abstract int getContentLayout();
+    protected abstract void initEvent();
+    protected abstract void initView();
+    protected abstract void initData();
 
     public static void setTranslucent(Activity activity) {
         activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);

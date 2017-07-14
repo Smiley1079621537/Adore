@@ -1,6 +1,12 @@
-package me.lemuel.adore;
+package me.lemuel.adore.mvp;
 
 import android.database.sqlite.SQLiteDatabase;
+
+import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.App;
+import me.lemuel.adore.DaoMaster;
+import me.lemuel.adore.DaoSession;
+import me.lemuel.adore.NoteDao;
 
 public class LocalDepositary {
 
@@ -15,8 +21,8 @@ public class LocalDepositary {
     }
 
     public void getNote(AdoreCallback<NoteDao> callback) {
-        SQLiteDatabase database = new DaoMaster
-                .DevOpenHelper(App.getAppContext(), DAO_TABLE_NAME, null).getWritableDatabase();
+        SQLiteDatabase database = new DaoMaster.DevOpenHelper(
+                App.getAppContext(), DAO_TABLE_NAME, null).getWritableDatabase();
         DaoSession daoSession = new DaoMaster(database).newSession();
         NoteDao noteDao = daoSession.getNoteDao();
         callback.onSuccess(noteDao);

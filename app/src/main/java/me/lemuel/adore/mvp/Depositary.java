@@ -1,21 +1,26 @@
-package me.lemuel.adore;
+package me.lemuel.adore.mvp;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.List;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import me.drakeet.multitype.Items;
+import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.AdoreSubscriver;
 import me.lemuel.adore.api.ApiManager;
+import me.lemuel.adore.base.AdoreToast;
 import me.lemuel.adore.bean.movie.Movie;
 import me.lemuel.adore.bean.movie.SubjectsBean;
 import me.lemuel.adore.bean.music.Music;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.bean.music.SongListInfo;
+import me.lemuel.adore.bean.translate.Word;
 
-public class Depositary {
+public class Depositary implements AdoreToast{
     private Items items = new Items();
 
     private static class DepositaryHolder {
@@ -24,6 +29,28 @@ public class Depositary {
 
     public static Depositary getInstance() {
         return DepositaryHolder.depositary;
+    }
+
+    public void translate(String content, final AdoreCallback<Word> callback) {
+        ApiManager.getTranslateService().getResult(content)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AdoreSubscriver<Word>() {
+                    @Override
+                    public void onNext(Word word) {
+                        if (null != word) {
+                            int errorCode = word.getErrorCode();
+                            if (errorCode == 20) {
+                                ToastUtils.showShortSafe(TOAST_TRANSLATE_TEXT_TOO_LONG);
+                            } else if (errorCode == 40) {
+                                ToastUtils.showShortSafe(TOAST_DONT_SUPPORT_LANGUAGE);
+                            } else if (errorCode == 0) {
+                                callback.onSuccess(word);
+                            }
+                        }
+                    }
+                });
+
     }
 
     public void requestMovie(final AdoreCallback<Items> callback) {
@@ -46,10 +73,8 @@ public class Depositary {
 
     public void requestMusic(SongListInfo songListInfo, int offset,
                              final AdoreCallback<OnlineMusicList> callback) {
-        ApiManager.getMusicService()
-                .getSongList(songListInfo.getType(),
-                        String.valueOf(20),
-                        String.valueOf(offset))
+        ApiManager.getMusicService().getSongList(songListInfo.getType(),
+                String.valueOf(20), String.valueOf(offset))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AdoreSubscriver<OnlineMusicList>() {
@@ -62,8 +87,7 @@ public class Depositary {
     }
 
     public void doPlay(OnlineMusic onlineMusic, final AdoreCallback<Music> callback) {
-        ApiManager.getMusicService()
-                .getMusic(onlineMusic.getSong_id())
+        ApiManager.getMusicService().getMusic(onlineMusic.getSong_id())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AdoreSubscriver<Music>() {

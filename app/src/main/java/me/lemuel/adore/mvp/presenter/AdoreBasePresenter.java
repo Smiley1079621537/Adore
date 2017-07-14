@@ -1,7 +1,7 @@
-package me.lemuel.adore.presenter;
+package me.lemuel.adore.mvp.presenter;
 
-import me.lemuel.adore.Depositary;
-import me.lemuel.adore.LocalDepositary;
+import me.lemuel.adore.mvp.Depositary;
+import me.lemuel.adore.mvp.LocalDepositary;
 
 public abstract class AdoreBasePresenter {
     protected Depositary mDepositary = Depositary.getInstance();

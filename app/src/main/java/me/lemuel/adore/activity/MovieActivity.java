@@ -1,19 +1,13 @@
 package me.lemuel.adore.activity;
 
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
@@ -21,18 +15,17 @@ import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import me.lemuel.adore.AdoreSubscriver;
 import me.lemuel.adore.R;
-import me.lemuel.adore.api.ApiManager;
+import me.lemuel.adore.base.BaseActivity;
 import me.lemuel.adore.bean.translate.Word;
-import me.lemuel.adore.fragment.DialogView;
+import me.lemuel.adore.view.DialogView;
+import me.lemuel.adore.mvp.movie.MovieActivityContract;
+import me.lemuel.adore.mvp.movie.MovieActivityPersenter;
 import me.lemuel.adore.util.CommentUtil;
 
-public class MovieActivity extends AppCompatActivity {
+public class MovieActivity extends BaseActivity implements MovieActivityContract.View {
 
     @BindView(R.id.movie_img)
     SimpleDraweeView mMovieImg;
@@ -48,36 +41,46 @@ public class MovieActivity extends AppCompatActivity {
     FloatingActionButton mFab;
     @BindView(R.id.app_bar)
     AppBarLayout mBarLayout;
+    private String mImgUrl;
+    private MovieActivityPersenter mPersenter;
 
-
-    @SuppressLint("RestrictedApi")
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie);
+    protected int getContentLayout() {
+        return R.layout.activity_movie;
+    }
+
+    @Override
+    protected void initData() {
+        mImgUrl = getIntent().getStringExtra("image");
+        mMovieImg.setImageURI(mImgUrl);
+        mPersenter = new MovieActivityPersenter(this);
+    }
+
+    @Override
+    protected void initView() {
         ButterKnife.bind(this);
         CommentUtil.setTransparentStatusbar(this);
         setSupportActionBar(mToolbar);
-        //显示左上角的返回按钮
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Lemuel");
-        //不使用左下角的大标题
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setTitle("Lemuel");
+        }
         collapsingToolbarLayout.setTitleEnabled(false);
-        final String imgUrl = getIntent().getStringExtra("image");
-        mMovieImg.setImageURI(imgUrl);
+    }
+
+    @Override
+    protected void initEvent() {
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showBottomDialog(imgUrl);
+                showBottomDialog(mImgUrl);
             }
         });
-        RxTextView.textChanges(mSearchTranslate)
-                .debounce(500, TimeUnit.MILLISECONDS)
+        RxTextView.textChanges(mSearchTranslate).debounce(500, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<CharSequence>() {
                     @Override
                     public void accept(@NonNull CharSequence charSequence) throws Exception {
-                        doTranslateSearch(charSequence.toString().trim());
+                        mPersenter.translate(charSequence.toString().trim());
                     }
                 });
     }
@@ -88,29 +91,8 @@ public class MovieActivity extends AppCompatActivity {
         dialogView.show(getSupportFragmentManager(), "fragment_bottom_dialog");
     }
 
-    //执行单词翻译
-    private void doTranslateSearch(String searchText) {
-        ApiManager.getTranslateService()
-                .getResult(searchText)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AdoreSubscriver<Word>() {
-                    @Override
-                    public void onNext(Word word) {
-                        if (null != word) {
-                            int errorCode = word.getErrorCode();
-                            if (errorCode == 20) {
-                                ToastUtils.showShortSafe("要翻译的文本过长");
-                            } else if (errorCode == 40) {
-                                ToastUtils.showShortSafe("不支持该语言");
-                            } else if (errorCode == 0) {
-                                mTranslateResult.setText("");
-                                mTranslateResult.setText(word.getTranslation().get(0));
-                            }
-                        }
-                    }
-                });
-
+    @Override
+    public void translateResponse(Word word) {
+        mTranslateResult.setText(word.getTranslation().get(0));
     }
-
 }

@@ -25,7 +25,7 @@ import java.net.URL;
 
 import me.lemuel.adore.R;
 import me.lemuel.adore.activity.HomeActivity;
-import me.lemuel.adore.base.ImmanuelAction;
+import me.lemuel.adore.base.MusicAction;
 import me.lemuel.adore.bean.music.Music;
 
 /**
@@ -57,7 +57,7 @@ public class PlayMusicService extends Service {
             @Override
             public void onReceive(Context context, Intent intent) {
                 switch (intent.getAction()){
-                    case ImmanuelAction.ACTION_PALY_PAUSE://播放or暂停
+                    case MusicAction.ACTION_PALY_PAUSE://播放or暂停
                        if (mPlayer.isPlaying()){
                            mPlayer.pause();
                            mRemoteViews.setImageViewResource(R.id.notify_playPause,android.R.drawable.ic_media_play);
@@ -71,7 +71,7 @@ public class PlayMusicService extends Service {
             }
         };
         IntentFilter filter = new IntentFilter();
-        filter.addAction(ImmanuelAction.ACTION_PALY_PAUSE);
+        filter.addAction(MusicAction.ACTION_PALY_PAUSE);
         registerReceiver(mBroadcastReceiver,filter);
     }
 
@@ -142,7 +142,7 @@ public class PlayMusicService extends Service {
             mRemoteViews = new RemoteViews(this.getPackageName(),
                     R.layout.notification_layout);
             mRemoteViews.setOnClickPendingIntent(R.id.notify_playPause,PendingIntent.getBroadcast(
-                    this,0,new Intent(ImmanuelAction.ACTION_PALY_PAUSE),0));
+                    this,0,new Intent(MusicAction.ACTION_PALY_PAUSE),0));
             Intent intent = new Intent(this, HomeActivity.class);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this.getApplicationContext())
                     .setContentIntent(PendingIntent.getActivity(this, 0, intent, 0))

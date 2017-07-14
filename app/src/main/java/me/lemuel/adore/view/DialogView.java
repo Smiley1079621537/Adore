@@ -1,4 +1,4 @@
-package me.lemuel.adore.fragment;
+package me.lemuel.adore.view;
 
 import android.app.Dialog;
 import android.net.Uri;

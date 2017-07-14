@@ -42,6 +42,7 @@ import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.fragment.MovieFragment;
 import me.lemuel.adore.fragment.MusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
+import me.lemuel.adore.util.CommentUtil;
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +72,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        CommentUtil.setTransparentStatusbar(this);
         ButterKnife.bind(this);
         initView();
         initEvent();
@@ -118,10 +120,8 @@ public class HomeActivity extends AppCompatActivity
         fragments[0] = MovieFragment.newInstance();
         fragments[1] = MusicFragment.newInstance();
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
-        tabPagerAdapter.setTabTitles(new String[]{
-                getString(R.string.has_released),
-                getString(R.string.online_music)
-        });
+        tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released),
+                getString(R.string.online_music)});
         viewPager.setAdapter(tabPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         setAvatar();
@@ -136,7 +136,8 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void showAvatarAlert() {
-        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源").setItems(new String[]{"拍照", "图库"}, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源")
+                .setItems(new String[]{"拍照", "图库"}, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -243,7 +244,7 @@ public class HomeActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_camera:
-                wxShare();
+               // wxShare();
                 break;
             case R.id.nav_manage:
 
