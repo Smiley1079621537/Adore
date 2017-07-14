@@ -17,4 +17,9 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
+    <style name="Splash" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
 </resources>
