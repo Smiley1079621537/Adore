@@ -3,10 +3,6 @@ package me.lemuel.adore.listener;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
-/**
- * author : lemuel
- * time   : 2017/03/28
- */
 public abstract class OnLoadMoreListener extends RecyclerView.OnScrollListener {
 
     //用来标记是否正在向最后一个滑动，既是否向下滑动

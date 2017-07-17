@@ -1,4 +1,4 @@
-package me.lemuel.adore;
+package me.lemuel.adore.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;

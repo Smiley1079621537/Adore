@@ -1,6 +1,6 @@
 package me.lemuel.adore.mvp.music;
 
-import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.base.AdoreCallback;
 import me.lemuel.adore.NoteDao;
 import me.lemuel.adore.bean.music.Music;
 import me.lemuel.adore.bean.music.OnlineMusic;

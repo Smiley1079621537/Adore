@@ -6,9 +6,6 @@ import android.support.multidex.MultiDexApplication;
 import com.blankj.utilcode.util.Utils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.squareup.leakcanary.LeakCanary;
-import com.umeng.socialize.Config;
-import com.umeng.socialize.PlatformConfig;
-import com.umeng.socialize.UMShareAPI;
 
 import butterknife.ButterKnife;
 import zlc.season.rxdownload2.RxDownload;
@@ -20,7 +17,7 @@ public class App extends MultiDexApplication {
     private static App appContext;
 
     static {
-        PlatformConfig.setWeixin("wxb91475a5accdcf0e", "35faf2f10421f56816904376a3aaf209");
+      //  PlatformConfig.setWeixin("wxb91475a5accdcf0e", "35faf2f10421f56816904376a3aaf209");
     }
 
     public static App getAppContext() {
@@ -37,8 +34,6 @@ public class App extends MultiDexApplication {
         appContext = this;
         Fresco.initialize(this);
         LeakCanary.install(this);
-        UMShareAPI.get(this);
-        Config.DEBUG = true;
         // initCalligraphy();
         Utils.init(this);
     }

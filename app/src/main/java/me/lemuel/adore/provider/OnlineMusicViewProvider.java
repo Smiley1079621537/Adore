@@ -17,9 +17,6 @@ import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
 import me.lemuel.adore.bean.music.OnlineMusic;
 
-/**
- * Created by Immanuel on 2017/05/09.
- */
 public class OnlineMusicViewProvider
         extends ItemViewProvider<OnlineMusic, OnlineMusicViewProvider.ViewHolder> {
 

@@ -1,6 +1,6 @@
 package me.lemuel.adore.mvp.movie;
 
-import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.base.AdoreCallback;
 import me.lemuel.adore.bean.translate.Word;
 import me.lemuel.adore.mvp.presenter.AdoreBasePresenter;
 

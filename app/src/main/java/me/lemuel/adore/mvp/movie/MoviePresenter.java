@@ -1,7 +1,7 @@
 package me.lemuel.adore.mvp.movie;
 
 import me.drakeet.multitype.Items;
-import me.lemuel.adore.AdoreCallback;
+import me.lemuel.adore.base.AdoreCallback;
 import me.lemuel.adore.mvp.presenter.AdoreBasePresenter;
 
 /**

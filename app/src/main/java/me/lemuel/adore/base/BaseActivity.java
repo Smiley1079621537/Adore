@@ -1,6 +1,7 @@
 package me.lemuel.adore.base;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +15,12 @@ import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 
+import butterknife.ButterKnife;
 import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.lemuel.adore.bean.music.OnlineMusicList;
+import me.lemuel.adore.util.CommentUtil;
 import me.lemuel.adore.view.DialogView;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
@@ -24,9 +28,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentLayout());
+        CommentUtil.setTransparentStatusbar(this);
+        ButterKnife.bind(this);
         initView();
         initData();
         initEvent();
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 
     protected abstract int getContentLayout();

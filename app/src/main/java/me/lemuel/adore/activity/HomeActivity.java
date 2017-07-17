@@ -1,8 +1,6 @@
 package me.lemuel.adore.activity;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,30 +19,24 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.blankj.utilcode.util.FileUtils;
-import com.geniusforapp.fancydialog.FancyAlertDialog;
-import com.umeng.socialize.ShareAction;
-import com.umeng.socialize.bean.SHARE_MEDIA;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.TabPagerAdapter;
+import me.lemuel.adore.base.BaseActivity;
 import me.lemuel.adore.fragment.MovieFragment;
 import me.lemuel.adore.fragment.MusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
-import me.lemuel.adore.util.CommentUtil;
 
-public class HomeActivity extends AppCompatActivity
+public class HomeActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_CAMERA = 0x01;
@@ -67,18 +59,13 @@ public class HomeActivity extends AppCompatActivity
     @BindView(R.id.nav_view)
     NavigationView mNavView;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        CommentUtil.setTransparentStatusbar(this);
-        ButterKnife.bind(this);
-        initView();
-        initEvent();
+    protected int getContentLayout() {
+        return R.layout.activity_home;
     }
 
-    private void initEvent() {
+    @Override
+    protected void initEvent() {
         fb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +94,8 @@ public class HomeActivity extends AppCompatActivity
         });
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -116,6 +104,10 @@ public class HomeActivity extends AppCompatActivity
         mNavView.setNavigationItemSelectedListener(this);
         mAvatar = (ImageView) mNavView.getHeaderView(0).findViewById(R.id.avatar);
         tabLayout.setTabMode(TabLayout.MODE_FIXED);
+    }
+
+    @Override
+    protected void initData() {
         Fragment[] fragments = new Fragment[2];
         fragments[0] = MovieFragment.newInstance();
         fragments[1] = MusicFragment.newInstance();
@@ -154,35 +146,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
     }
-
-    private void showAlert(final Activity activity) {
-        FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(activity)
-                .setImageRecourse(R.drawable.ic_adb_black_24dp)
-                .setTextTitle("今日经文")
-                .setTextSubTitle("林后5:17")
-                .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
-                .setNegativeColor(R.color.colorAccent)
-                .setNegativeButtonText("取消")
-                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        dialog.dismiss();
-                    }
-                })
-                .setPositiveButtonText("确定")
-                .setPositiveColor(R.color.colorPrimary)
-                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
-                    @Override
-                    public void OnClick(View view, Dialog dialog) {
-                        Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
-                .setAutoHide(false)
-                .build();
-        alert.show();
-    }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -255,13 +218,6 @@ public class HomeActivity extends AppCompatActivity
         }
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    //微信分享
-    private void wxShare() {
-        new ShareAction(HomeActivity.this).setPlatform(SHARE_MEDIA.WEIXIN_CIRCLE)
-                .withText("Immanuel分享测试！")
-                .share();
     }
 
     @Override

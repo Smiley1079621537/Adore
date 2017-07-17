@@ -1,4 +1,4 @@
-package me.lemuel.adore;
+package me.lemuel.adore.base;
 
 import com.blankj.utilcode.util.ToastUtils;
 

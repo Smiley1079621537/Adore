@@ -19,9 +19,6 @@ import me.lemuel.adore.activity.MovieActivity;
 import me.lemuel.adore.bean.movie.SubjectsBean;
 import me.lemuel.adore.util.CommentUtil;
 
-/**
- * Created by lemuel on 2017/2/27.
- */
 public class SubjectProvider
         extends ItemViewProvider<SubjectsBean, SubjectProvider.ViewHolder> {
 

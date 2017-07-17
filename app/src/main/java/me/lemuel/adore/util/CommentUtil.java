@@ -1,11 +1,15 @@
 package me.lemuel.adore.util;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
+import android.widget.Toast;
+
+import com.geniusforapp.fancydialog.FancyAlertDialog;
 
 import java.util.List;
 
@@ -55,5 +59,32 @@ public class CommentUtil {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    private void showAlert(final Activity activity) {
+        FancyAlertDialog.Builder alert = new FancyAlertDialog.Builder(activity)
+                .setImageRecourse(R.drawable.ic_adb_black_24dp)
+                .setTextTitle("今日经文")
+                .setTextSubTitle("林后5:17")
+                .setBody("若有人在基督里，他就是新造的人，\n旧事已过，都变成新的了。")
+                .setNegativeColor(R.color.colorAccent)
+                .setNegativeButtonText("取消")
+                .setOnNegativeClicked(new FancyAlertDialog.OnNegativeClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        dialog.dismiss();
+                    }
+                })
+                .setPositiveButtonText("确定")
+                .setPositiveColor(R.color.colorPrimary)
+                .setOnPositiveClicked(new FancyAlertDialog.OnPositiveClicked() {
+                    @Override
+                    public void OnClick(View view, Dialog dialog) {
+                        Toast.makeText(activity, "Updating", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setButtonsGravity(FancyAlertDialog.PanelGravity.CENTER)
+                .build();
+        alert.show();
     }
 }

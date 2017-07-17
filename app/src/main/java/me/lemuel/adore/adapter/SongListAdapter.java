@@ -14,11 +14,11 @@ import java.util.ArrayList;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-import me.lemuel.adore.AdoreSubscriver;
+import me.lemuel.adore.base.AdoreSubscriver;
 import me.lemuel.adore.R;
 import me.lemuel.adore.activity.MusicActivity;
 import me.lemuel.adore.api.ApiManager;
-import me.lemuel.adore.base.Extras;
+import me.lemuel.adore.base.MusicExtras;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.bean.music.SongListInfo;
@@ -80,7 +80,7 @@ public class SongListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 public void onClick(View v) {
                     SongListInfo songListInfo = mSongListInfos.get(holder.getAdapterPosition());
                     Intent intent = new Intent(mContext, MusicActivity.class);
-                    intent.putExtra(Extras.MUSIC_LIST_TYPE, songListInfo);
+                    intent.putExtra(MusicExtras.MUSIC_LIST_TYPE, songListInfo);
                     mContext.startActivity(intent);
                 }
             });

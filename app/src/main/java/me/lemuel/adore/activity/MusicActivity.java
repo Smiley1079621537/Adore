@@ -18,23 +18,21 @@ import com.facebook.imagepipeline.request.ImageRequestBuilder;
 import com.facebook.imagepipeline.request.Postprocessor;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
-import me.lemuel.adore.mvp.music.MusicPresenter;
 import me.lemuel.adore.R;
 import me.lemuel.adore.base.BaseActivity;
-import me.lemuel.adore.base.Extras;
+import me.lemuel.adore.base.MusicExtras;
 import me.lemuel.adore.bean.music.Music;
 import me.lemuel.adore.bean.music.OnlineMusic;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.bean.music.SongListInfo;
 import me.lemuel.adore.mvp.music.MusicContract;
+import me.lemuel.adore.mvp.music.MusicPresenter;
 import me.lemuel.adore.provider.BillboardViewProvider;
 import me.lemuel.adore.provider.OnlineMusicViewProvider;
 import me.lemuel.adore.service.PlayMusicService;
-import me.lemuel.adore.util.CommentUtil;
 
 
 public class MusicActivity extends BaseActivity implements MusicContract.View {
@@ -72,8 +70,6 @@ public class MusicActivity extends BaseActivity implements MusicContract.View {
 
     @Override
     protected void initView() {
-        CommentUtil.setTransparentStatusbar(this);
-        ButterKnife.bind(this);
         mMusicViewProvider = new OnlineMusicViewProvider();
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
@@ -91,7 +87,7 @@ public class MusicActivity extends BaseActivity implements MusicContract.View {
 
     @Override
     protected void initData() {
-        SongListInfo songListInfo = getIntent().getParcelableExtra(Extras.MUSIC_LIST_TYPE);
+        SongListInfo songListInfo = getIntent().getParcelableExtra(MusicExtras.MUSIC_LIST_TYPE);
         mMusicPresenter = new MusicPresenter(this);
         mMusicPresenter.requestMusic(songListInfo, 0);
     }

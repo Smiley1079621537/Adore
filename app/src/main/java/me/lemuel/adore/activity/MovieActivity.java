@@ -14,16 +14,14 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
 import me.lemuel.adore.R;
 import me.lemuel.adore.base.BaseActivity;
 import me.lemuel.adore.bean.translate.Word;
-import me.lemuel.adore.view.DialogView;
 import me.lemuel.adore.mvp.movie.MovieActivityContract;
 import me.lemuel.adore.mvp.movie.MovieActivityPersenter;
-import me.lemuel.adore.util.CommentUtil;
+import me.lemuel.adore.view.DialogView;
 
 public class MovieActivity extends BaseActivity implements MovieActivityContract.View {
 
@@ -41,6 +39,7 @@ public class MovieActivity extends BaseActivity implements MovieActivityContract
     FloatingActionButton mFab;
     @BindView(R.id.app_bar)
     AppBarLayout mBarLayout;
+
     private String mImgUrl;
     private MovieActivityPersenter mPersenter;
 
@@ -58,8 +57,6 @@ public class MovieActivity extends BaseActivity implements MovieActivityContract
 
     @Override
     protected void initView() {
-        ButterKnife.bind(this);
-        CommentUtil.setTransparentStatusbar(this);
         setSupportActionBar(mToolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);

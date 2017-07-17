@@ -16,10 +16,6 @@ import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 
-
-/**
- * Created by Immanuel on 2017/05/09.
- */
 public class BillboardViewProvider
         extends ItemViewProvider<OnlineMusicList.Billboard, BillboardViewProvider.ViewHolder> {
 

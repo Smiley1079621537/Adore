@@ -11,10 +11,6 @@ import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
 import me.lemuel.adore.bean.bible.Section;
 
-/**
- * author : lemuel
- * time   : 2017/03/23
- */
 public class SectionViewProvider
         extends ItemViewProvider<Section, SectionViewProvider.ViewHolder> {
 
