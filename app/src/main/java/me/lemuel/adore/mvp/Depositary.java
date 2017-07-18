@@ -49,6 +49,11 @@ public class Depositary implements AdoreToast{
                             }
                         }
                     }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
                 });
 
     }
@@ -68,6 +73,12 @@ public class Depositary implements AdoreToast{
                         }
                         callback.onSuccess(items);
                     }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                        callback.onError(t);
+                    }
                 });
     }
 
@@ -83,6 +94,11 @@ public class Depositary implements AdoreToast{
                         super.onNext(musicList);
                         callback.onSuccess(musicList);
                     }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
+                    }
                 });
     }
 
@@ -96,6 +112,11 @@ public class Depositary implements AdoreToast{
                         super.onNext(music);
                         callback.onSuccess(music);
                         LogUtils.i(music.toString());
+                    }
+
+                    @Override
+                    public void onError(Throwable t) {
+                        super.onError(t);
                     }
                 });
     }

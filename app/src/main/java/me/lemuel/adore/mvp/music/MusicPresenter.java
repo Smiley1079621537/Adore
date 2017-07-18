@@ -23,6 +23,11 @@ public class MusicPresenter extends AdoreBasePresenter implements MusicContract.
             public void onSuccess(OnlineMusicList onlineMusicList) {
                 musicView.responseMusicList(onlineMusicList);
             }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
         });
     }
 
@@ -33,6 +38,12 @@ public class MusicPresenter extends AdoreBasePresenter implements MusicContract.
             public void onSuccess(Music music) {
                 musicView.doPlayMusic(music);
             }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
         });
     }
 
@@ -41,6 +52,11 @@ public class MusicPresenter extends AdoreBasePresenter implements MusicContract.
         mLocalDepositary.getNote(new AdoreCallback<NoteDao>() {
             @Override
             public void onSuccess(NoteDao noteDao) {
+
+            }
+
+            @Override
+            public void onError(Throwable t) {
 
             }
         });

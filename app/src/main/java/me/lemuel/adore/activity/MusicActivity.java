@@ -10,15 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.backends.pipeline.PipelineDraweeController;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
-import com.facebook.imagepipeline.request.Postprocessor;
 
 import butterknife.BindView;
-import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.drakeet.multitype.Items;
 import me.drakeet.multitype.MultiTypeAdapter;
 import me.lemuel.adore.R;
@@ -124,19 +118,5 @@ public class MusicActivity extends BaseActivity implements MusicContract.View {
         items.addAll(onlineMusicList.getSong_list());
         mAdapter.setItems(items);
         mAdapter.notifyDataSetChanged();
-
-    }
-
-    //图片模糊处理
-    public void blurHeaderView(SimpleDraweeView draweeView, OnlineMusicList.Billboard billboard) {
-        Postprocessor postprocessor = new BlurPostprocessor(draweeView.getContext(), 50);
-        ImageRequest imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(billboard.getPic_s640()))
-                .setPostprocessor(postprocessor)
-                .build();
-        PipelineDraweeController controller = (PipelineDraweeController) Fresco.newDraweeControllerBuilder()
-                .setImageRequest(imageRequest)
-                .setOldController(draweeView.getController())
-                .build();
-        draweeView.setController(controller);
     }
 }

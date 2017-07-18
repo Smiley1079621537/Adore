@@ -20,7 +20,7 @@ import me.lemuel.adore.bean.movie.DirectorsBean;
  * Created by lemuel on 2017/3/1.
  */
 
-public class CommentUtil {
+public class AdoreUtil {
 
     public static String formatDirector(List<DirectorsBean> list) {
         StringBuilder builder = new StringBuilder();

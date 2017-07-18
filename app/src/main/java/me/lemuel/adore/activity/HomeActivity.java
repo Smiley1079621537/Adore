@@ -32,6 +32,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 import me.lemuel.adore.R;
 import me.lemuel.adore.adapter.TabPagerAdapter;
 import me.lemuel.adore.base.BaseActivity;
+import me.lemuel.adore.fragment.GankFragment;
 import me.lemuel.adore.fragment.MovieFragment;
 import me.lemuel.adore.fragment.MusicFragment;
 import me.lemuel.adore.util.BitmapUtil;
@@ -41,7 +42,7 @@ public class HomeActivity extends BaseActivity
 
     private static final int REQUEST_CAMERA = 0x01;
     private static final int REQUEST_ALBUM = 0X02;
-    private boolean isCollapsed = false;//是否被折叠
+    private boolean isCollapsed = false;
     private ImageView mAvatar;
 
     @BindView(R.id.toolbar)
@@ -111,8 +112,12 @@ public class HomeActivity extends BaseActivity
         Fragment[] fragments = new Fragment[2];
         fragments[0] = MovieFragment.newInstance();
         fragments[1] = MusicFragment.newInstance();
-        TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(getSupportFragmentManager(), fragments);
-        tabPagerAdapter.setTabTitles(new String[]{getString(R.string.has_released),
+        fragments[2] = GankFragment.newInstance();
+                TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(
+                getSupportFragmentManager(), fragments);
+        tabPagerAdapter
+                .setTabTitles(new String[]{
+                getString(R.string.has_released),
                 getString(R.string.online_music)});
         viewPager.setAdapter(tabPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -128,16 +133,20 @@ public class HomeActivity extends BaseActivity
     }
 
     private void showAvatarAlert() {
-        new AlertDialog.Builder(HomeActivity.this).setTitle("选择来源")
-                .setItems(new String[]{"拍照", "图库"}, new DialogInterface.OnClickListener() {
+        new AlertDialog.Builder(HomeActivity.this)
+                .setTitle(R.string.choose_source)
+                .setItems(new String[]{
+                                getString(R.string.take_pictures),
+                                getString(R.string.gallery)},
+                        new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
-                    case 0://拍照
+                    case 0:
                         Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                         startActivityForResult(camera, REQUEST_CAMERA);
                         break;
-                    case 1://图库
+                    case 1:
                         Intent picture = new Intent(Intent.ACTION_PICK,
                                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(picture, REQUEST_ALBUM);
@@ -151,21 +160,15 @@ public class HomeActivity extends BaseActivity
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_CAMERA && resultCode == RESULT_OK && data != null) {
-            //说明是拍照
             Bundle bundle = data.getExtras();
-            //获取相机返回的数据，并转换为图片格式
             Bitmap cameraBitmap = (Bitmap) bundle.get("data");
             mAvatar.setImageBitmap(cameraBitmap);
-            //将图片保存在本地
             BitmapUtil.saveImage(this, cameraBitmap);
         } else if (requestCode == REQUEST_ALBUM && resultCode == RESULT_OK && data != null) {
-            //图库
             Uri selectedImage = data.getData();
             String pathResult = BitmapUtil.getPath(this, selectedImage);
-            //加载存储空间中的图片资源并显示
             Bitmap albumBitmap = BitmapFactory.decodeFile(pathResult);
             mAvatar.setImageBitmap(albumBitmap);
-            //保存图片到本地
             BitmapUtil.saveImage(this, albumBitmap);
         }
     }
@@ -191,12 +194,13 @@ public class HomeActivity extends BaseActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
-                startActivity(new Intent(this, MainActivity.class));
+
                 break;
             case R.id.read:
 
                 break;
             default:
+
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -206,14 +210,8 @@ public class HomeActivity extends BaseActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_camera:
-               // wxShare();
-                break;
-            case R.id.nav_manage:
-
-                break;
-            case R.id.nav_gallery:
-
+            case R.id.nav_bible:
+                goToActivity(MainActivity.class);
                 break;
         }
         drawer.closeDrawer(GravityCompat.START);

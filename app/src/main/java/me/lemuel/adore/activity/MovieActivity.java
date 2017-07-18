@@ -5,11 +5,15 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
+import com.richpath.RichPath;
+import com.richpath.RichPathView;
+import com.richpathanimator.RichPathAnimator;
 
 import java.util.concurrent.TimeUnit;
 
@@ -39,6 +43,8 @@ public class MovieActivity extends BaseActivity implements MovieActivityContract
     FloatingActionButton mFab;
     @BindView(R.id.app_bar)
     AppBarLayout mBarLayout;
+    @BindView(R.id.notification)
+    RichPathView mNotification;
 
     private String mImgUrl;
     private MovieActivityPersenter mPersenter;
@@ -80,6 +86,22 @@ public class MovieActivity extends BaseActivity implements MovieActivityContract
                         mPersenter.translate(charSequence.toString().trim());
                     }
                 });
+        pathAnimator();
+    }
+
+    private void pathAnimator() {
+        RichPath top = mNotification.findRichPathByName("top");
+        RichPath bottom = mNotification.findRichPathByName("bottom");
+        RichPathAnimator.animate(top)
+                .interpolator(new DecelerateInterpolator())
+                .rotation(0, 20, -20, 10, -10, 5, -5, 2, -2, 0)
+                .duration(4000)
+                .andAnimate(bottom)
+                .interpolator(new DecelerateInterpolator())
+                .rotation(0, 10, -10, 5, -5, 2, -2, 0)
+                .startDelay(50)
+                .duration(4000)
+                .start();
     }
 
     private void showBottomDialog(String imgUrl) {

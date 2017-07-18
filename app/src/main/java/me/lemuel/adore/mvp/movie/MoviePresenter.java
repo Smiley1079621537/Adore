@@ -30,6 +30,11 @@ public class MoviePresenter extends AdoreBasePresenter implements MovieContract.
                 movieView.hideLoding();
                 movieView.loadData(items);
             }
+
+            @Override
+            public void onError(Throwable t) {
+                movieView.hideLoding();
+            }
         });
     }
 }

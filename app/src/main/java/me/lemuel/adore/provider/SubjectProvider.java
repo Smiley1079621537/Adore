@@ -17,7 +17,7 @@ import me.drakeet.multitype.ItemViewProvider;
 import me.lemuel.adore.R;
 import me.lemuel.adore.activity.MovieActivity;
 import me.lemuel.adore.bean.movie.SubjectsBean;
-import me.lemuel.adore.util.CommentUtil;
+import me.lemuel.adore.util.AdoreUtil;
 
 public class SubjectProvider
         extends ItemViewProvider<SubjectsBean, SubjectProvider.ViewHolder> {
@@ -40,7 +40,7 @@ public class SubjectProvider
     protected void onBindViewHolder(@NonNull final ViewHolder holder, @NonNull final SubjectsBean movie) {
         holder.title.setText(movie.getTitle());
         holder.year.setText(movie.getYear());
-        holder.director.setText(CommentUtil.formatDirector(movie.getDirectors()));
+        holder.director.setText(AdoreUtil.formatDirector(movie.getDirectors()));
         ViewGroup.LayoutParams lp = holder.pic.getLayoutParams();
         lp.height = movie.getHeight();
         holder.pic.setLayoutParams(lp);//瀑布流效果

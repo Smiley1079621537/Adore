@@ -18,7 +18,7 @@ import me.lemuel.adore.mvp.movie.MovieContract;
 import me.lemuel.adore.mvp.movie.MoviePresenter;
 import me.lemuel.adore.provider.SubjectProvider;
 
-public class MovieFragment extends BaseFragment
+public  class MovieFragment extends BaseFragment
         implements MovieContract.View, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.recyclerview)
@@ -58,7 +58,7 @@ public class MovieFragment extends BaseFragment
         ((DefaultItemAnimator) mRecyclerview.getItemAnimator())
                 .setSupportsChangeAnimations(false);//避免notifyDataSetChanged时闪屏
         mRefresh.setOnRefreshListener(this);
-        mRefresh.setRefreshing(false);
+        mRefresh.setRefreshing(true);
         mRecyclerview.setLayoutManager(new StaggeredGridLayoutManager(3,
                 StaggeredGridLayoutManager.VERTICAL));
     }

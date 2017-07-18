@@ -13,12 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp"
+        android:background="@color/colorPrimary"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/search_translate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <com.richpath.RichPathView
+            android:id="@+id/notification"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:vector="@drawable/ic_notifications" />
 
         <TextView
             android:id="@+id/translate_result"

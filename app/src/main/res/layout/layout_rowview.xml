@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/rowview_background"
+              android:gravity="center">
+
+    <ImageView
+        android:id="@+id/rowview_icon"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/splash"/>
+
+    <TextView
+        android:id="@+id/rowview_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_weight="1"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:text="Profile"/>
+
+    <ImageButton
+        android:id="@+id/rowview_more"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:background="@null"
+        android:src="@drawable/rowview_more"/>
+
+</LinearLayout>

@@ -20,6 +20,11 @@ public class MovieActivityPersenter
             public void onSuccess(Word word) {
                 view.translateResponse(word);
             }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
         });
     }
 }

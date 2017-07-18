@@ -42,13 +42,24 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <activity android:name=".activity.MainActivity"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:label="@string/bible"/>
         <activity android:name=".activity.MovieActivity"/>
         <activity android:name=".activity.MusicActivity"/>
 
         <service android:name=".service.PlayMusicService"/>
 
-        <activity android:name=".activity.SplashActivity" android:theme="@style/Splash">
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Splash">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>-->
+        </activity>
+        <activity android:name=".activity.ProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

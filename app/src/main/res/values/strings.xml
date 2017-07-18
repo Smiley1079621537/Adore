@@ -109,4 +109,8 @@
     <string name="imageTransition">movieImage</string>
     <string name="immanuel">Immanuel</string>
     <string name="returned_from_app_settings_to_activity">返回</string>
+    <string name="choose_source">选择来源</string>
+    <string name="take_pictures">拍照</string>
+    <string name="gallery">图库</string>
+    <string name="bible">Bible</string>
 </resources>
