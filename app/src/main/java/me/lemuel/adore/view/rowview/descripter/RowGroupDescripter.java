@@ -3,13 +3,13 @@ package me.lemuel.adore.view.rowview.descripter;
 import java.util.ArrayList;
 
 public class RowGroupDescripter {
-    private ArrayList<RowDescripter> rowDescripters;
+    private ArrayList<BaseRowViewDescripter> rowDescripters;
 
-    public RowGroupDescripter(ArrayList<RowDescripter> rowDescripters) {
+    public RowGroupDescripter(ArrayList<BaseRowViewDescripter> rowDescripters) {
         this.rowDescripters = rowDescripters;
     }
 
-    public ArrayList<RowDescripter> getRowDescripters() {
+    public ArrayList<BaseRowViewDescripter> getRowDescripters() {
         return rowDescripters;
     }
 }

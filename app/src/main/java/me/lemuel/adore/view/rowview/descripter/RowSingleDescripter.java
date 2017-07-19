@@ -2,12 +2,13 @@ package me.lemuel.adore.view.rowview.descripter;
 
 import me.lemuel.adore.base.RowAction;
 
-public class RowDescripter extends BaseRowViewDescripter{
+public class RowSingleDescripter extends BaseRowViewDescripter {
+
     private int iconResId;
     private String title;
     private RowAction action;
 
-    public RowDescripter(int iconResId, String title, RowAction action) {
+    public RowSingleDescripter(int iconResId, String title, RowAction action) {
         this.iconResId = iconResId;
         this.title = title;
         this.action = action;

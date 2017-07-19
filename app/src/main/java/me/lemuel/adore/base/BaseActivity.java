@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import jp.wasabeef.fresco.processors.BlurPostprocessor;
 import me.lemuel.adore.bean.music.OnlineMusicList;
 import me.lemuel.adore.util.AdoreUtil;
+import me.lemuel.adore.util.SupportMultipleScreensUtil;
 import me.lemuel.adore.view.DialogView;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -29,11 +31,22 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getContentLayout());
+        supportMultipleScreens();
         AdoreUtil.setTransparentStatusbar(this);
         ButterKnife.bind(this);
         initView();
         initData();
         initEvent();
+    }
+
+    /**
+     * 多屏幕适配（图片放置在drawable-nodpi中）宽高都要px，字体也用px
+     * 添加View到GroupView前使用SupportMultipleScreensUtil.scale(rootView);
+     */
+    private void supportMultipleScreens() {
+        View rootView=findViewById(android.R.id.content);
+        SupportMultipleScreensUtil.init(getApplication());
+        SupportMultipleScreensUtil.scale(rootView);
     }
 
     @Override

@@ -35,6 +35,11 @@ public class ProfileActivity extends BaseActivity implements OnRowViewClickListe
     @Override
     protected void initView() {
 
+        addViewToLayout();
+    }
+
+    private void addViewToLayout(){
+
     }
 
     @Override

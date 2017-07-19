@@ -1,14 +1,19 @@
 package me.lemuel.adore.view.rowview.view;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 
 import me.lemuel.adore.listener.OnRowViewClickListener;
+import me.lemuel.adore.view.rowview.descripter.BaseRowViewDescripter;
 import me.lemuel.adore.view.rowview.descripter.RowDescripter;
+import me.lemuel.adore.view.rowview.descripter.RowSingleDescripter;
 
 public class RowGroupView extends LinearLayout {
 
@@ -34,14 +39,28 @@ public class RowGroupView extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    public void initializeData(ArrayList<RowDescripter> descripters, OnRowViewClickListener listener) {
+    public void initializeData(ArrayList<BaseRowViewDescripter> descripters, OnRowViewClickListener listener) {
         if (descripters!=null && descripters.size() > 0){
-            RowView rowView;
-            for (RowDescripter descripter : descripters) {
-                rowView = new RowView(context);
-                rowView.initializeData(descripter,listener);
-                addView(rowView);
+            for (int i = 0; i < descripters.size(); i++) {
+                BaseRowViewDescripter d = descripters.get(i);
+                if (d instanceof RowSingleDescripter){
+                    RowSingleView rowSingleView = new RowSingleView(context);
+                    rowSingleView.initializeData((RowSingleDescripter) d,listener);
+                    addView(rowSingleView);
+                }else if (d instanceof RowDescripter){
+                    RowView rowView = new RowView(context);
+                    rowView.initializeData((RowDescripter) d,listener);
+                    addView(rowView);
+                }
+                View view = new View(context);
+                view.setBackgroundColor(Color.BLUE);
+                float density = context.getResources().getDisplayMetrics().density;
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (1*density));
+                addView(view,lp);
             }
+            setVisibility(VISIBLE);
+        }else {
+            setVisibility(GONE);
         }
     }
 }

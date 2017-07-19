@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import me.lemuel.adore.listener.OnRowViewClickListener;
 import me.lemuel.adore.view.rowview.descripter.RowContainerDescripter;
 import me.lemuel.adore.view.rowview.descripter.RowGroupDescripter;
+import me.lemuel.adore.view.rowview.descripter.RowProfileViewDescripter;
 
 public class RowContainerView extends LinearLayout {
 
@@ -34,18 +35,47 @@ public class RowContainerView extends LinearLayout {
         setOrientation(VERTICAL);
     }
 
-    public void initializeData(RowContainerDescripter descripters, OnRowViewClickListener listener){
-        if (descripters!=null && descripters.getGroupDescripters().size() > 0){
-            RowGroupView groupView;
+    public void initializeData(RowContainerDescripter descripters, OnRowViewClickListener listener) {
+        addProfileView(descripters, listener);
+        addRowGroupView(descripters, listener);
+    }
+
+    /**
+     * 添加RowGroupView
+     * @param descripters
+     * @param listener
+     */
+    private void addRowGroupView(RowContainerDescripter descripters, OnRowViewClickListener listener) {
+        if (descripters.getGroupDescripters().size() > 0) {
             LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT);
             float density = context.getResources().getDisplayMetrics().density;
-            layoutParams.topMargin = (int) (20 * density);
+            layoutParams.topMargin = (int) (25 * density);
             for (RowGroupDescripter descripter : descripters.getGroupDescripters()) {
-                groupView = new RowGroupView(context);
-                groupView.initializeData(descripter.getRowDescripters(),listener);
-                addView(groupView,layoutParams);
+                RowGroupView groupView = new RowGroupView(context);
+                groupView.initializeData(descripter.getRowDescripters(), listener);
+                addView(groupView, layoutParams);
             }
+            setVisibility(VISIBLE);
+        } else {
+            setVisibility(GONE);
+        }
+    }
+
+    /**
+     * 添加头部
+     * @param descripters
+     * @param listener
+     */
+    private void addProfileView(RowContainerDescripter descripters, OnRowViewClickListener listener) {
+        if (descripters != null && descripters.getProfileViewDescripter() != null) {
+            RowProfileViewDescripter profileDescripter = descripters.getProfileViewDescripter();
+            RowProfileView rowProfileView = new RowProfileView(context);
+            rowProfileView.initializeData(profileDescripter, listener);
+            addView(rowProfileView);
+            setVisibility(VISIBLE);
+        } else {
+            setVisibility(GONE);
         }
     }
 }
