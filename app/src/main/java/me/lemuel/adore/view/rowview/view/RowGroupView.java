@@ -40,27 +40,35 @@ public class RowGroupView extends LinearLayout {
     }
 
     public void initializeData(ArrayList<BaseRowViewDescripter> descripters, OnRowViewClickListener listener) {
-        if (descripters!=null && descripters.size() > 0){
-            for (int i = 0; i < descripters.size(); i++) {
-                BaseRowViewDescripter d = descripters.get(i);
-                if (d instanceof RowSingleDescripter){
-                    RowSingleView rowSingleView = new RowSingleView(context);
-                    rowSingleView.initializeData((RowSingleDescripter) d,listener);
-                    addView(rowSingleView);
-                }else if (d instanceof RowDescripter){
-                    RowView rowView = new RowView(context);
-                    rowView.initializeData((RowDescripter) d,listener);
-                    addView(rowView);
-                }
-                View view = new View(context);
-                view.setBackgroundColor(Color.BLUE);
-                float density = context.getResources().getDisplayMetrics().density;
-                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (1*density));
-                addView(view,lp);
-            }
+        if (descripters != null && descripters.size() > 0) {
+            addRowView(descripters, listener);
             setVisibility(VISIBLE);
-        }else {
+        } else {
             setVisibility(GONE);
+        }
+    }
+
+    private void addRowView(ArrayList<BaseRowViewDescripter> descripters, OnRowViewClickListener listener) {
+        for (int i = 0; i < descripters.size(); i++) {
+            BaseRowViewDescripter d = descripters.get(i);
+            if (d instanceof RowSingleDescripter) {
+                RowSingleView rowSingleView = new RowSingleView(context);
+                rowSingleView.initializeData((RowSingleDescripter) d, listener);
+                addView(rowSingleView);
+            } else if (d instanceof RowDescripter) {
+                RowView rowView = new RowView(context);
+                rowView.initializeData((RowDescripter) d, listener);
+                addView(rowView);
+            }
+            if (i < descripters.size() - 1) {
+                View view = new View(context);
+                view.setBackgroundColor(Color.parseColor("#809E9E9E"));
+                float density = context.getResources().getDisplayMetrics().density;
+                LayoutParams lp = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) (1 * density));
+                lp.leftMargin = (int) (8 * density);
+                lp.rightMargin = (int) (8 * density);
+                addView(view, lp);
+            }
         }
     }
 }

@@ -47,18 +47,22 @@ public class RowContainerView extends LinearLayout {
      */
     private void addRowGroupView(RowContainerDescripter descripters, OnRowViewClickListener listener) {
         if (descripters.getGroupDescripters().size() > 0) {
-            LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            float density = context.getResources().getDisplayMetrics().density;
-            layoutParams.topMargin = (int) (25 * density);
-            for (RowGroupDescripter descripter : descripters.getGroupDescripters()) {
-                RowGroupView groupView = new RowGroupView(context);
-                groupView.initializeData(descripter.getRowDescripters(), listener);
-                addView(groupView, layoutParams);
-            }
+            addRowView(descripters, listener);
             setVisibility(VISIBLE);
         } else {
             setVisibility(GONE);
+        }
+    }
+
+    private void addRowView(RowContainerDescripter descripters, OnRowViewClickListener listener) {
+        LayoutParams layoutParams = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+        float density = context.getResources().getDisplayMetrics().density;
+        layoutParams.topMargin = (int) (25 * density);
+        for (RowGroupDescripter descripter : descripters.getGroupDescripters()) {
+            RowGroupView groupView = new RowGroupView(context);
+            groupView.initializeData(descripter.getRowDescripters(), listener);
+            addView(groupView, layoutParams);
         }
     }
 
